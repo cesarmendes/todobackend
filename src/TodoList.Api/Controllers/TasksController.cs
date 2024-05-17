@@ -1,5 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using TodoList.Api.Transports.Tasks.Create;
+using TodoList.Api.Transports.Tasks.Delete;
+using TodoList.Api.Transports.Tasks.Get;
+using TodoList.Api.Transports.Tasks.Update;
 
 namespace TodoList.Api.Controllers
 {
@@ -11,7 +16,7 @@ namespace TodoList.Api.Controllers
 
         public TasksController(IMediator mediator)
         {
-            _mediator = mediator;    
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -20,22 +25,57 @@ namespace TodoList.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] int id) 
+        [HttpGet("{Id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetTaskResponse))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Get([FromRoute] GetTaskRequest request, CancellationToken token)
         {
-            return Ok(id);
+            var result = await _mediator.Send(request.AsQuery(), token);
+
+            if (result is null)
+                return NoContent();
+
+            return Ok(GetTaskResponse.From(result));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateTaskResponse))]
+        public async Task<IActionResult> Create([FromBody] CreateTaskRequest request, CancellationToken token)
+        {
+            var result = await _mediator.Send(request.AsCommand(), token);
+
+            if (result.IsFailed)
+            {
+
+            }
+
+            return Created(Request.GetDisplayUrl(), CreateTaskResponse.From(result.Value));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTaskResponse))]
+        public async Task<IActionResult> Update([FromBody] UpdateTaskRequest request, CancellationToken token)
         {
-            return Ok(id);
+            var result = await _mediator.Send(request.AsCommand(), token);
+
+            if (result.IsFailed) 
+            {
+            }
+
+            return Ok(UpdateTaskResponse.From(result.Value));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody] int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteTaskResponse))]
+        public async Task<IActionResult> Delete([FromBody] DeleteTaskRequest request, CancellationToken token)
         {
-            return Ok();
+            var result = await _mediator.Send(request.AsCommand(), token);
+
+            if (result.IsFailed)
+            {
+            }
+
+            return Ok(DeleteTaskResponse.From(result.Value));
         }
     }
 }

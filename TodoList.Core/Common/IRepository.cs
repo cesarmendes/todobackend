@@ -10,7 +10,7 @@ namespace TodoList.Core.Common
         where TEntity : class
         where TKey : struct
     {
-        ValueTask<TEntity> GetAsync(TKey key, CancellationToken token = default);
+        ValueTask<TEntity?> GetAsync(TKey key, CancellationToken token = default);
         Task<int> InsertAsync(TEntity entity, CancellationToken token = default);
         Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken token = default);
         Task<int> UpdateAsync(TEntity entity, CancellationToken token = default);

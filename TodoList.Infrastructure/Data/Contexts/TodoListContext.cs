@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TodoList.Infrastructure.Data.Configurations;
+using Task = TodoList.Core.Tasks.Task;
 
 namespace TodoList.Infrastructure.Data.Contexts
 {
@@ -14,6 +11,13 @@ namespace TodoList.Infrastructure.Data.Contexts
         {
         }
 
-        public DbSet<Task> MyProperty { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration<Task>(new TaskConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

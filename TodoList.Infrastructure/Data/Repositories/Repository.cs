@@ -18,11 +18,9 @@ namespace TodoList.Infrastructure.Data.Repositories
             _context = context;
         }
 
-        public ValueTask<TEntity> GetAsync(TKey key, CancellationToken token = default)
+        public ValueTask<TEntity?> GetAsync(TKey key, CancellationToken token = default)
         {
-            //return _context.FindAsync<TEntity>(key, token);
-            throw new NotImplementedException();
-
+            return _context.Set<TEntity>().FindAsync(key, token);
         }
 
         public Task<int> InsertAsync(TEntity entity, CancellationToken token = default)

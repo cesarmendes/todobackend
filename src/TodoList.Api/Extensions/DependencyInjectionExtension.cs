@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using TodoList.Core.Tasks;
+using TodoList.Infrastructure.Data.Repositories;
+using TodoList.UserCases.Tasks.Create;
 
 namespace TodoList.Api.Extensions
 {
@@ -9,11 +11,11 @@ namespace TodoList.Api.Extensions
         {
             builder.Services.AddMediatR(options => 
             {
-                options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                options.RegisterServicesFromAssembly(typeof(CreateTaskCommand).Assembly);
             });
 
             //Repositories
-            builder.Services.AddScoped<ITaskRepository, ITaskRepository>();
+            builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
             return builder;
         }

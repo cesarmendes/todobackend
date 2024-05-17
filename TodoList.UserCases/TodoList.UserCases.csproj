@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Tasks\" />
+    <PackageReference Include="FluentResults" Version="3.15.2" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.2.0" />
+    <ProjectReference Include="..\TodoList.Core\TodoList.Core.csproj" />
   </ItemGroup>
 
 </Project>

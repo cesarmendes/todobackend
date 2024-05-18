@@ -5,6 +5,7 @@ using TodoList.Api.Transports.Tasks.Create;
 using TodoList.Api.Transports.Tasks.Delete;
 using TodoList.Api.Transports.Tasks.Get;
 using TodoList.Api.Transports.Tasks.Update;
+using TodoList.Api.Extensions;
 
 namespace TodoList.Api.Controllers
 {
@@ -40,13 +41,15 @@ namespace TodoList.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateTaskResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Create([FromBody] CreateTaskRequest request, CancellationToken token)
         {
             var result = await _mediator.Send(request.AsCommand(), token);
 
             if (result.IsFailed)
             {
-
+                return this.ResultToConflict(result);
             }
 
             return Created(Request.GetDisplayUrl(), CreateTaskResponse.From(result.Value));
@@ -54,12 +57,15 @@ namespace TodoList.Api.Controllers
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateTaskResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Update([FromBody] UpdateTaskRequest request, CancellationToken token)
         {
             var result = await _mediator.Send(request.AsCommand(), token);
 
             if (result.IsFailed) 
             {
+                return this.ResultToConflict(result);
             }
 
             return Ok(UpdateTaskResponse.From(result.Value));
@@ -67,12 +73,15 @@ namespace TodoList.Api.Controllers
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DeleteTaskResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Delete([FromBody] DeleteTaskRequest request, CancellationToken token)
         {
             var result = await _mediator.Send(request.AsCommand(), token);
 
             if (result.IsFailed)
             {
+                return this.ResultToConflict(result);
             }
 
             return Ok(DeleteTaskResponse.From(result.Value));

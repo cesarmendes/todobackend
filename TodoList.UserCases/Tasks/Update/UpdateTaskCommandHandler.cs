@@ -28,7 +28,7 @@ namespace TodoList.UserCases.Tasks.Update
             {
                 _logger.LogWarning("Task with Id: '{Id}' was not found, update failed.", request.Id);
 
-                return Result.Fail("Problema");
+                return Result.Fail("A tarefa que precisa ser atualizada não existe!");
             }
 
             task.Title = request.Title;

@@ -27,7 +27,7 @@ namespace TodoList.UserCases.Tasks.Delete
             {
                 _logger.LogWarning("Task with Id: '{Id}' was not found, delete failed.", request.Id);
 
-                return Result.Fail("");
+                return Result.Fail("A tarefa que precisa ser deletada não existe!");
             }
 
             await _taskRepository.DeleteAsync(task);

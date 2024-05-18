@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using TodoList.Api.Extensions;
 using TodoList.Api.Transports.Tasks.Create;
 using TodoList.Api.Transports.Tasks.Delete;
 using TodoList.Api.Transports.Tasks.Get;
+using TodoList.Api.Transports.Tasks.Search;
 using TodoList.Api.Transports.Tasks.Update;
-using TodoList.Api.Extensions;
 
 namespace TodoList.Api.Controllers
 {
@@ -21,9 +22,11 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Search([FromQuery] SearchTasksRequest request)
         {
-            return Ok();
+            var result = await _mediator.Send(request.AsQuery());
+
+            return Ok(result);
         }
 
         [HttpGet("{Id}")]

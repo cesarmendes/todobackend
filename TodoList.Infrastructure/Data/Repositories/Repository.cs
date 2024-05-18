@@ -12,7 +12,8 @@ namespace TodoList.Infrastructure.Data.Repositories
         where TEntity : class
         where TKey : struct
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
+
         protected Repository(DbContext context)
         {
             _context = context;

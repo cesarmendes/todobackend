@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Diagnostics;
 using TodoList.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseGlobalExceptionHandler();
 
 app.UseHttpsRedirection();
 

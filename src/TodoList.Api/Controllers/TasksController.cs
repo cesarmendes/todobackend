@@ -26,6 +26,8 @@ namespace TodoList.Api.Controllers
         {
             var result = await _mediator.Send(request.AsQuery());
 
+            throw new NotImplementedException();
+
             return Ok(result);
         }
 

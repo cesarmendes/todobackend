@@ -30,11 +30,12 @@ namespace TodoList.Infrastructure.Data.Contexts
         {
             return new List<Status>()
             {
-                new Status(1, "Pendente"),
+                new Status(1, "A fazer"),
                 new Status(2, "Em andamento"),
-                new Status(3, "Em testes"),
+                new Status(3, "Revisando"),
                 new Status(4, "Concluído"),
                 new Status(5, "Bloqueado"),
+                new Status(6, "Cancelado")
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using TodoList.Core.Status.Repositories;
 using TodoList.Core.Tasks.Repositories;
 using TodoList.Infrastructure.Data.Repositories;
 using TodoList.UserCases.Tasks.Create;
@@ -15,7 +16,9 @@ namespace TodoList.Api.Extensions
             });
 
             //Repositories
+            builder.Services.AddScoped<IStatusRepository, StatusRepository>();
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
 
             return builder;
         }

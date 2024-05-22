@@ -2,6 +2,7 @@
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using TodoList.Core.Status.Repositories;
 using TodoList.Core.Tasks.Events;
 using TodoList.Core.Tasks.Repositories;
 using Task = TodoList.Core.Tasks.Aggregates.Task;
@@ -11,12 +12,14 @@ namespace TodoList.UserCases.Tasks.Create
     internal class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Result<Task>>
     {
         private readonly IBus _bus;
+        private readonly IStatusRepository _statusRepository;
         private readonly ITaskRepository _taskRepository;
         private readonly ILogger<CreateTaskCommandHandler> _logger;
 
-        public CreateTaskCommandHandler(IBus bus, ITaskRepository taskRepository, ILogger<CreateTaskCommandHandler> logger)
+        public CreateTaskCommandHandler(IBus bus, IStatusRepository statusRepository, ITaskRepository taskRepository, ILogger<CreateTaskCommandHandler> logger)
         {
             _bus = bus;
+            _statusRepository = statusRepository;
             _taskRepository = taskRepository;
             _logger = logger;
         }
@@ -25,9 +28,18 @@ namespace TodoList.UserCases.Tasks.Create
         {
             _logger.LogInformation("Creating Task with title: '{Title}'", request.Title);
 
+            var status = await _statusRepository.GetAsync(request.StatusId);
+
+            if (status is null) 
+            {
+                _logger.LogWarning("Status with Id: '{StatusId}' not found, create failed.", request.StatusId);
+
+                return Result.Fail("O Id do status infomado não existe!");
+            }
+
             var task = new Task() 
             {
-                StatusId= 0,
+                StatusId = status.Id,
                 Title = request.Title,
                 Description = request.Description,
                 CreateAt = DateTime.Now

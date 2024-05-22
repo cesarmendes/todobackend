@@ -2,6 +2,7 @@
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using TodoList.Core.Status.Repositories;
 using TodoList.Core.Tasks.Events;
 using TodoList.Core.Tasks.Repositories;
 using Task = TodoList.Core.Tasks.Aggregates.Task;
@@ -12,12 +13,14 @@ namespace TodoList.UserCases.Tasks.Update
     public record UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, Result<Task>>
     {
         private readonly IBus _bus;
+        private readonly IStatusRepository _statusRepository;
         private readonly ITaskRepository _taskRepository;
         private readonly ILogger<UpdateTaskCommandHandler> _logger;
 
-        public UpdateTaskCommandHandler(IBus bus, ITaskRepository taskRepository, ILogger<UpdateTaskCommandHandler> logger)
+        public UpdateTaskCommandHandler(IBus bus, IStatusRepository statusRepository, ITaskRepository taskRepository, ILogger<UpdateTaskCommandHandler> logger)
         {
             _bus = bus;
+            _statusRepository = statusRepository;
             _taskRepository = taskRepository;
             _logger = logger;
         }
@@ -33,6 +36,15 @@ namespace TodoList.UserCases.Tasks.Update
                 _logger.LogWarning("Task with Id: '{Id}' was not found, update failed.", request.Id);
 
                 return Result.Fail("A tarefa que precisa ser atualizada não existe!");
+            }
+
+            var status = await _statusRepository.GetAsync(request.StatusId);
+
+            if (status is null)
+            {
+                _logger.LogWarning("Status with Id: '{StatusId}' not found, update failed.", request.StatusId);
+
+                return Result.Fail("O Id do status infomado não existe!");
             }
 
             task.Title = request.Title;

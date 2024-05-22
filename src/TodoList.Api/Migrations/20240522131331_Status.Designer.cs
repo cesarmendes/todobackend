@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoList.Infrastructure.Data.Contexts;
 
@@ -11,9 +12,11 @@ using TodoList.Infrastructure.Data.Contexts;
 namespace TodoList.Api.Migrations
 {
     [DbContext(typeof(TodoListContext))]
-    partial class TodoListContextModelSnapshot : ModelSnapshot
+    [Migration("20240522131331_Status")]
+    partial class Status
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +53,7 @@ namespace TodoList.Api.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "A fazer"
+                            Name = "Pendente"
                         },
                         new
                         {
@@ -60,7 +63,7 @@ namespace TodoList.Api.Migrations
                         new
                         {
                             Id = 3,
-                            Name = "Revisando"
+                            Name = "Em testes"
                         },
                         new
                         {
@@ -71,11 +74,6 @@ namespace TodoList.Api.Migrations
                         {
                             Id = 5,
                             Name = "Bloqueado"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Cancelado"
                         });
                 });
 
@@ -92,7 +90,7 @@ namespace TodoList.Api.Migrations
                     b.Property<DateTime>("CreateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATETIME")
-                        .HasDefaultValue(new DateTime(2024, 5, 22, 10, 28, 29, 99, DateTimeKind.Local).AddTicks(8125))
+                        .HasDefaultValue(new DateTime(2024, 5, 22, 10, 13, 31, 463, DateTimeKind.Local).AddTicks(5576))
                         .HasColumnName("CRIADO_EM")
                         .HasComment("Campo com os valores da data de criação da tarefa.");
 

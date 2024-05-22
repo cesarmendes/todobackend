@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using TodoList.Core.Tasks;
-using Task = TodoList.Core.Tasks.Task;
+using TodoList.Core.Tasks.Repositories;
+using Task = TodoList.Core.Tasks.Aggregates.Task;
 
 
 namespace TodoList.UserCases.Tasks.Get

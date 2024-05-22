@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Task = TodoList.Core.Tasks.Task;
+using Task = TodoList.Core.Tasks.Aggregates.Task;
 
 namespace TodoList.Infrastructure.Data.Configurations
 {

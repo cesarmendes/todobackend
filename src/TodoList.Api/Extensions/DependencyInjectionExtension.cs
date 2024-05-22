@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using TodoList.Core.Tasks;
+using TodoList.Core.Tasks.Repositories;
 using TodoList.Infrastructure.Data.Repositories;
 using TodoList.UserCases.Tasks.Create;
 

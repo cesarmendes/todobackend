@@ -1,6 +1,6 @@
 ﻿using TodoList.Core.Common;
 
-namespace TodoList.Core.Tasks
+namespace TodoList.Core.Tasks.Aggregates
 {
     public class Task : Entity<int>
     {

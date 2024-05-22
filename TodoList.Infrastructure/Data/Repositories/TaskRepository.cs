@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoList.Core.Tasks;
+using TodoList.Core.Tasks.Repositories;
 using TodoList.Infrastructure.Data.Contexts;
-using Task = TodoList.Core.Tasks.Task;
+using Task = TodoList.Core.Tasks.Aggregates.Task;
 
 namespace TodoList.Infrastructure.Data.Repositories
 {

@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using TodoList.Core.Tasks.Events;
 
 namespace TodoList.Api.Extensions
 {
@@ -12,6 +13,10 @@ namespace TodoList.Api.Extensions
 
                 options.UsingRabbitMq((context, cfg) => 
                 {
+                    cfg.Publish<TaskCreatedEvent>();
+                    cfg.Publish<TaskDeletedEvent>();
+                    cfg.Publish<TaskUpdatedEvent>();
+
                     cfg.Host(builder.Configuration["ConnectionStrings:MessageBroker"]);
                 });
             });

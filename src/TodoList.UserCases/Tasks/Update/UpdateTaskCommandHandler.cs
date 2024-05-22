@@ -37,6 +37,7 @@ namespace TodoList.UserCases.Tasks.Update
 
             task.Title = request.Title;
             task.Description = request.Description;
+            task.StatusId = request.StatusId;
 
             await _taskRepository.UpdateAsync(task);
 

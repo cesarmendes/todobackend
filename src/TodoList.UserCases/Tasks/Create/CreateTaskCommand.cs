@@ -8,6 +8,6 @@ namespace TodoList.UserCases.Tasks.Create
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public int Status { get; set; }
+        public int StatusId { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace TodoList.UserCases.Tasks.Create
 
             var task = new Task() 
             {
-                Status= 0,
+                StatusId= 0,
                 Title = request.Title,
                 Description = request.Description,
                 CreateAt = DateTime.Now

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TodoList.Core.Status.Aggregates;
 using Task = TodoList.Core.Tasks.Aggregates.Task;
 
 namespace TodoList.Infrastructure.Data.Configurations
@@ -33,9 +34,9 @@ namespace TodoList.Infrastructure.Data.Configurations
                    .HasMaxLength(3000)
                    .IsRequired();
 
-            builder.Property(entity => entity.Status)
+            builder.Property(entity => entity.StatusId)
                    .HasComment("Campo com os valores do status da tarefa.")
-                   .HasColumnName("STATUS")
+                   .HasColumnName("ID_STATUS")
                    .HasColumnType("INT")
                    .IsRequired();
 
@@ -44,6 +45,12 @@ namespace TodoList.Infrastructure.Data.Configurations
                    .HasColumnName("CRIADO_EM")
                    .HasColumnType("DATETIME")
                    .HasDefaultValue(DateTime.Now)
+                   .IsRequired();
+
+            builder.HasOne<Status>()
+                   .WithMany()
+                   .HasForeignKey(entity => entity.StatusId)
+                   .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
         }
     }

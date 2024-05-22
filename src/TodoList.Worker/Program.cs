@@ -7,6 +7,8 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddMassTransit(options => 
         {
+            options.SetKebabCaseEndpointNameFormatter();
+
             options.AddConsumer<TaskCreatedConsumer>();
             options.AddConsumer<TaskDeletedConsumer>();
             options.AddConsumer<TaskUpdatedConsumer>();

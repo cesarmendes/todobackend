@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -24,6 +24,9 @@
     <ProjectReference Include="..\..\TodoList.Core\TodoList.Core.csproj" />
     <ProjectReference Include="..\..\TodoList.Infrastructure\TodoList.Infrastructure.csproj" />
     <ProjectReference Include="..\..\TodoList.UserCases\TodoList.UserCases.csproj" />
+    <ProjectReference Include="..\TodoList.Core\TodoList.Core.csproj" />
+    <ProjectReference Include="..\TodoList.Infrastructure\TodoList.Infrastructure.csproj" />
+    <ProjectReference Include="..\TodoList.UserCases\TodoList.UserCases.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,4 @@
 ﻿using MassTransit;
-using Microsoft.EntityFrameworkCore;
-using TodoList.Infrastructure.Data.Contexts;
 
 namespace TodoList.Api.Extensions
 {
@@ -10,10 +8,11 @@ namespace TodoList.Api.Extensions
         {
             builder.Services.AddMassTransit(options => 
             {
+                options.SetKebabCaseEndpointNameFormatter();
+
                 options.UsingRabbitMq((context, cfg) => 
                 {
                     cfg.Host(builder.Configuration["ConnectionStrings:MessageBroker"]);
-
                 });
             });
 

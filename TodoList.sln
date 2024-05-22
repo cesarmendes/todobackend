@@ -5,11 +5,11 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Api", "src\TodoList.Api\TodoList.Api.csproj", "{DAFE6439-AD6B-4054-A5FA-A259F61BC641}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Core", "TodoList.Core\TodoList.Core.csproj", "{3E2A112C-94D1-4378-B68E-A6912C129709}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Core", "src\TodoList.Core\TodoList.Core.csproj", "{3E2A112C-94D1-4378-B68E-A6912C129709}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.UserCases", "TodoList.UserCases\TodoList.UserCases.csproj", "{1A78A3F8-8F98-4C28-BA40-1C8D83D4C380}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.UserCases", "src\TodoList.UserCases\TodoList.UserCases.csproj", "{1A78A3F8-8F98-4C28-BA40-1C8D83D4C380}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Infrastructure", "TodoList.Infrastructure\TodoList.Infrastructure.csproj", "{A1F4279D-4B0E-48EE-8F2D-F1E454BEE0BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Infrastructure", "src\TodoList.Infrastructure\TodoList.Infrastructure.csproj", "{A1F4279D-4B0E-48EE-8F2D-F1E454BEE0BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Worker", "src\TodoList.Worker\TodoList.Worker.csproj", "{C464DBA8-EA88-456A-AF08-09F5EA2F7482}"
 EndProject

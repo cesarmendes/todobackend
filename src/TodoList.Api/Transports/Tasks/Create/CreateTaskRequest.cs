@@ -18,12 +18,16 @@ namespace TodoList.Api.Transports.Tasks.Create
         [Required]
         public string Description { get; set; }
 
+        [Range(1, int.MaxValue)]
+        public int StatusId { get; set; }
+
         public CreateTaskCommand AsCommand() 
         { 
             return new CreateTaskCommand() 
             {
                 Title = Title,
-                Description = Description 
+                Description = Description,
+                StatusId = StatusId
             }; 
         }
     }

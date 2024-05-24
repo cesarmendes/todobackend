@@ -26,7 +26,7 @@ namespace TodoList.Api.Controllers
         {
             var result = await _mediator.Send(request.AsQuery());
 
-            return Ok(result);
+            return Ok(SearchTasksResponse.From(result));
         }
 
         [HttpGet("{Id}")]

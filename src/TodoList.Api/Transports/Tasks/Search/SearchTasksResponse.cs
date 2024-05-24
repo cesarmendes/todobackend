@@ -21,7 +21,7 @@ namespace TodoList.Api.Transports.Tasks.Search
 
         public bool IsLastPage { get; set; }
 
-        public IList<Task> Items { get; set; }
+        public List<TaskResponse> Items { get; set; }
 
         public static SearchTasksResponse From(IPaginatedList<Task> tasks) 
         {
@@ -33,8 +33,9 @@ namespace TodoList.Api.Transports.Tasks.Search
                 IsLastPage = tasks.IsLastPage,
                 TotalPages = tasks.TotalPages,
                 TotalItems = tasks.TotalItems,
-                Items = tasks.Items,
+                Items = TaskResponse.From(tasks),
                 PageNumber = tasks.PageNumber,
+                PageSize = tasks.PageSize,
             };
         }
     }

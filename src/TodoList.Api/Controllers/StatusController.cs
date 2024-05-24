@@ -19,7 +19,7 @@ namespace TodoList.Api.Controllers
         {
             var result = await _mediator.Send(request.AsQuery());
 
-            return Ok(result);
+            return Ok(SearchStatusResponse.From(result));
         }
     }
 }

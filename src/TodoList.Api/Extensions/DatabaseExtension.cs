@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoList.Infrastructure.Data.Contexts;
+using TodoList.Infrastructure.Data.Pagination;
 
 namespace TodoList.Api.Extensions
 {

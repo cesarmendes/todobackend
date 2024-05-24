@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TodoList.Core.Common;
 using TodoList.Core.Tasks.Repositories;
-using TodoList.Infrastructure.Data.Contexts;
+using TodoList.Infrastructure.Data.Pagination;
 using Task = TodoList.Core.Tasks.Aggregates.Task;
 
 namespace TodoList.Infrastructure.Data.Repositories
@@ -12,13 +13,13 @@ namespace TodoList.Infrastructure.Data.Repositories
         {
         }
 
-        public Task<List<Task>> SearchAsync(string? title, CancellationToken token = default)
+        public Task<IPaginatedList<Task>> SearchAsync(string? title, int page, int size, CancellationToken token = default)
         {
             var query = from task in _context.Set<Task>()
                         where string.IsNullOrEmpty(title) || task.Title.Contains(title)
                         select task;
 
-            return query.AsNoTracking().ToListAsync();
+            return query.AsNoTracking().ToPaginatedListAsync(page, size, token);
         }
     }
 }

@@ -4,6 +4,6 @@ namespace TodoList.Core.Status.Repositories
 {
     public interface IStatusRepository : IRepository<int, Aggregates.Status>
     {
-        Task<List<Aggregates.Status>> SearchAsync(string? name, CancellationToken token = default);
+        Task<IPaginatedList<Aggregates.Status>> SearchAsync(string? name, int page, int size, CancellationToken token = default);
     }
 }

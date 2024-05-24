@@ -6,8 +6,8 @@ import Task from "../../models/Task";
 
 interface TaskTableProps {
     tasks?: Task[];
-    onEditClick?: (id: number) => void;
-    onDeleteClick?: (id: number) => void;
+    onEditClick?: (task: Task) => void;
+    onDeleteClick?: (task: Task) => void;
   }
 
 const TaskTable : React.FC<TaskTableProps> = ({tasks, onEditClick, onDeleteClick}) => {
@@ -34,15 +34,15 @@ const TaskTable : React.FC<TaskTableProps> = ({tasks, onEditClick, onDeleteClick
                                     <TableRow key={task.id}>
                                         <TableCell>{task.id}</TableCell>
                                         <TableCell>{task.title}</TableCell>
-                                        <TableCell>{task.status}</TableCell>
+                                        <TableCell>{task.statusId}</TableCell>
                                         <TableCell>{task.description}</TableCell>
                                         <TableCell align="center">
-                                            <Tooltip title="Atualizar tarefa" onClick={() => onEditClick && onEditClick(task.id)}>
+                                            <Tooltip title="Atualizar tarefa" onClick={() => onEditClick && onEditClick(task)}>
                                                 <IconButton aria-label="delete" color="primary">
                                                     <EditIcon />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Excluir tarefa" onClick={() => onDeleteClick && onDeleteClick(task.id)}>
+                                            <Tooltip title="Excluir tarefa" onClick={() => onDeleteClick && onDeleteClick(task)}>
                                                 <IconButton aria-label="delete" color="primary">
                                                     <DeleteIcon />
                                                 </IconButton>

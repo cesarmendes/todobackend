@@ -15,4 +15,19 @@
     <ProjectReference Include="..\TodoList.Core\TodoList.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Globalization\ValidationInput.Designer.cs">
+      <DependentUpon>ValidationInput.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Globalization\ValidationInput.resx">
+      <LastGenOutput>ValidationInput.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

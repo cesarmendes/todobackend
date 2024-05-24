@@ -3,7 +3,7 @@ using TodoList.Core.Status.Aggregates;
 using TodoList.Infrastructure.Data.Configurations;
 using Task = TodoList.Core.Tasks.Aggregates.Task;
 
-namespace TodoList.Infrastructure.Data.Contexts
+namespace TodoList.Infrastructure.Data.Pagination
 {
     public class TodoListContext : DbContext
     {

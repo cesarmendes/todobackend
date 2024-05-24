@@ -1,7 +1,13 @@
-using Microsoft.AspNetCore.Diagnostics;
+using Serilog;
 using TodoList.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var log = new LoggerConfiguration()
+         .WriteTo.Http("http://localhost:8080", 3000)
+         .CreateLogger();
+
+builder.Logging.AddSerilog(log);
 
 // Add services to the container.
 builder.AddDatabase()

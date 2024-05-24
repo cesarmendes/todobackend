@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+using TodoList.Infrastructure.Globalization;
 using TodoList.UserCases.Tasks.Create;
 
 namespace TodoList.Api.Transports.Tasks.Create
@@ -12,13 +12,13 @@ namespace TodoList.Api.Transports.Tasks.Create
             Description = string.Empty;
         }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
         public string Title { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
         public string Description { get; set; }
 
-        [Range(1, int.MaxValue)]
+        [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
         public int StatusId { get; set; }
 
         public CreateTaskCommand AsCommand() 

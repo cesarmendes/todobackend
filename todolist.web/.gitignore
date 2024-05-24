@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+rabbitmq-data/*
+el_data/*
+kb_data/*
+ls_data/*
 node_modules
 dist
 dist-ssr

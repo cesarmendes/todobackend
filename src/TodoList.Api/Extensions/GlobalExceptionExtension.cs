@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mime;
 using System.Net;
-using TodoList.Infrastructure.Data.Contexts;
+using TodoList.Infrastructure.Data.Pagination;
 using System.Text.Json;
 
 namespace TodoList.Api.Extensions

@@ -5,6 +5,6 @@ namespace TodoList.Core.Tasks.Repositories
 {
     public interface ITaskRepository : IRepository<int, Task>
     {
-        Task<List<Task>> SearchAsync(string? title, CancellationToken token = default);
+        Task<IPaginatedList<Task>> SearchAsync(string? title, int page, int size, CancellationToken token = default);
     }
 }

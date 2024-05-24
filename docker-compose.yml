@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   rabbitmq:
@@ -12,4 +12,49 @@ services:
       RABBITMQ_DEFAULT_PASS: b3
       RABBITMQ_ERLANG_COOKIE: "ErlangCookie"
     volumes:
-      - ./rabbitmq-data:/var/lib/rabbitmq
+      - ./rb_data:/var/lib/rabbitmq
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    hostname: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - cluster.name=elasticsearch
+      - bootstrap.memory_lock=false
+    volumes:
+      - ./el_data:/usr/share/elasticsearch/data/
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    # networks:
+    #   - elk
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.13.4
+    hostname: logstash
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./ls_data:/usr/share/logstash/data
+    # networks:
+    #   - elk
+    depends_on:
+      - elasticsearch
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    hostname: kibana
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./kb_data:/usr/share/kibana/data
+    # networks:
+    #   - elk
+    depends_on:
+      - elasticsearch
+networks:
+  elk:
+    driver: bridge

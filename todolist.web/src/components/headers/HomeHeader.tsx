@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Card, CardContent, Stack, Typography } from "@mui/material";
 import { MouseEventHandler } from "react";
 
 interface HomeHeaderProps {
@@ -6,11 +6,17 @@ interface HomeHeaderProps {
   }
 
 const HomeHeader : React.FC<HomeHeaderProps> = ({ onButtonClick }) => {
+    const style = {card:{marginTop:3, marginBottom:3}};
+
     return (
-        <Stack direction="row" justifyContent="space-between" mt={5} mb={3}>
-            <Typography variant="h4">Minhas tarefas</Typography>
-            <Button variant="contained" onClick={onButtonClick}>Adicionar</Button>
-        </Stack>
+        <Card variant="outlined" sx={style.card}>
+            <CardContent>
+                <Stack direction="row" justifyContent="space-between" p={3} pt={2} pb={2}>
+                    <Typography variant="h4">Minhas tarefas</Typography>
+                    <Button variant="contained" onClick={onButtonClick}>Adicionar tarefa</Button>
+                </Stack>
+            </CardContent>
+        </Card>
     );
 };
 

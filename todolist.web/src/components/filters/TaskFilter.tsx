@@ -4,15 +4,17 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 interface TaskFilterProps {
     onSearchClick?: (name: string) => void;
+    onClearClick?: () => void;
 }
 
-const TaskFilter : React.FC<TaskFilterProps> = ({onSearchClick}) => {
+const TaskFilter : React.FC<TaskFilterProps> = ({onSearchClick, onClearClick}) => {
     const [name, setName] = useState('');
     
     const style = {button:{width:250},card:{marginBottom:3}};
 
     const onClick = () => {
         setName('');
+        onClearClick && onClearClick();
     }
 
     const onChange = (event : React.ChangeEvent<HTMLInputElement>) => {

@@ -3,24 +3,25 @@
 import { AxiosResponse } from "axios";
 import Task from "../models/Task";
 import ApiService from "./ApiService";
+import Paginated from "../models/Paginated";
 
 class TaskService extends ApiService {
     constructor() {
-        super("https://localhost:7043");
+        super(import.meta.env.VITE_URL_BASE);
     }
 
-    searchAsync(name:string) : Promise<AxiosResponse<Task[]>> {
-        return super.getAsync<Task[]>(`v1/api/tasks?title=${name}`);
+    searchAsync(name:string, page: number) : Promise<AxiosResponse<Paginated<Task>>> {
+        return super.getAsync<Paginated<Task>>(`v1/api/tasks?title=${name}&page=${page}`);
     }
     
     createAsync(task: Task) : Promise<AxiosResponse<Task>> {
         return super.postAsync<Task>(`v1/api/tasks`, task);
     }
 
-    // async deleteAsync(id: number) : Promise<Task> 
-    // {
-    //     return super.deleteAsync<Task>('v1/api/tasks', {id: id, title: '', description: '', status: ''});
-    // }
+    removeAsync(id: number) : Promise<AxiosResponse<Task>> 
+    {
+        return super.deleteAsync<Task>('v1/api/tasks', {id: id, title: '', description: '', status: '', statusId: 0});
+    }
 }
 
 export default TaskService;

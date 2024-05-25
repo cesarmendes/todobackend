@@ -41,7 +41,7 @@ const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, errors, onModa
 
     useEffect(() => {
         statusService.searchAsync('')
-                     .then(response => setStatus(response.data));
+                     .then(response => setStatus(response.data.items));
     },[]);
 
     useEffect(() => {

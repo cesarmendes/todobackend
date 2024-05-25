@@ -22,11 +22,11 @@ class ApiService{
 
     putAsync<T>(path: string, data: T): Promise<AxiosResponse<T>> {
         const url = `${this.baseUrl}/${path}`;
-        return axios.post<T>(url, data, {headers: this.headers});
+        return axios.put<T>(url, data, {headers: this.headers});
     }
     deleteAsync<T>(path: string, data: T): Promise<AxiosResponse<T>> {
         const url = `${this.baseUrl}/${path}`;
-        return axios.post<T>(url, data, {headers: this.headers});
+        return axios.delete<T>(url, {headers: this.headers, data: data});
     }
 }
 

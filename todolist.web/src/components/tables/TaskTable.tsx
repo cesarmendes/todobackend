@@ -1,23 +1,31 @@
-import { Card, CardContent, IconButton, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, Typography } from "@mui/material";
+import { Card, CardContent, IconButton, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, Typography, Pagination, Stack } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Task from "../../models/Task";
+import Paginated from "../../models/Paginated";
 
 interface TaskTableProps {
-    tasks?: Task[];
+    paginated?: Paginated<Task>;
     onEditClick?: (task: Task) => void;
     onDeleteClick?: (task: Task) => void;
+    onPageChange?: (page: number) => void;
   }
 
-const TaskTable : React.FC<TaskTableProps> = ({tasks, onEditClick, onDeleteClick}) => {
-    const style = {tableCell: {fontWeight: "bold"}};
+const TaskTable : React.FC<TaskTableProps> = ({paginated, onEditClick, onDeleteClick, onPageChange}) => {
+    const style = {table:{marginBottom:3}, tableCell: {fontWeight: "bold"}};
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        event.preventDefault();
+
+        onPageChange && onPageChange(value);
+    };
 
     return (
         <Card variant="outlined">
             <CardContent>
                 <TableContainer>
-                    <Table>
+                    <Table sx={style.table}>
                         <TableHead>
                             <TableRow>
                                 <TableCell variant="head" sx={style.tableCell}>Id</TableCell>
@@ -29,8 +37,8 @@ const TaskTable : React.FC<TaskTableProps> = ({tasks, onEditClick, onDeleteClick
                         </TableHead>
                         <TableBody>
                             {
-                                tasks && tasks.length > 0 ?
-                                tasks.map(task => (
+                                paginated && paginated.items?.length > 0 ?
+                                paginated.items.map(task => (
                                     <TableRow key={task.id}>
                                         <TableCell>{task.id}</TableCell>
                                         <TableCell>{task.title}</TableCell>
@@ -60,6 +68,14 @@ const TaskTable : React.FC<TaskTableProps> = ({tasks, onEditClick, onDeleteClick
                       
                         </TableBody>
                     </Table>
+                    {
+                        paginated && paginated.items?.length > 0 ?
+                        <Stack direction="row" justifyContent="flex-end">
+                            <Pagination color="primary" page={paginated?.pageNumber} count={paginated?.totalPages} onChange={handleChange} />
+                        </Stack>
+                        :
+                        null
+                    }
                 </TableContainer>
             </CardContent>
         </Card>

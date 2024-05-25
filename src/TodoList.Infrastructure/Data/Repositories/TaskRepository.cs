@@ -17,6 +17,7 @@ namespace TodoList.Infrastructure.Data.Repositories
         {
             var query = from task in _context.Set<Task>()
                         where string.IsNullOrEmpty(title) || task.Title.Contains(title)
+                        orderby task.Id descending
                         select task;
 
             return query.AsNoTracking().ToPaginatedListAsync(page, size, token);

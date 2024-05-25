@@ -1,13 +1,16 @@
+using Elastic.Apm.NetCoreAll;
 using Serilog;
 using TodoList.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var log = new LoggerConfiguration()
-         .WriteTo.Http("http://localhost:8080", 3000)
-         .CreateLogger();
 
-builder.Logging.AddSerilog(log);
+
+builder.Host.UseSerilog((hostContext, services, configuration) => {
+    configuration.ReadFrom.Configuration(builder.Configuration);
+});
+
+Log.Information("Starting API");
 
 // Add services to the container.
 builder.AddDatabase()
@@ -32,7 +35,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseSerilogRequestLogging();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

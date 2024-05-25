@@ -8,23 +8,18 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: b3
-      RABBITMQ_DEFAULT_PASS: b3
+      RABBITMQ_DEFAULT_USER: todolist
+      RABBITMQ_DEFAULT_PASS: todolist
       RABBITMQ_ERLANG_COOKIE: "ErlangCookie"
     volumes:
       - ./rb_data:/var/lib/rabbitmq
-  # apm-server:
-  #   image: docker.elastic.co/apm/apm-server:8.13.4
-  #   hostname: apm-server
-  #   ports:
-  #     - "8200:8200"
-  #   environment:
-  #     - output.elasticsearch.hosts=["elasticsearch:9200"]
-  #     - output.elasticsearch.protocol=http
-  #     - output.elasticsearch.username=elastic
-  #     - output.elasticsearch.password=
-  #     - output.elasticsearch.ssl.enabled=false
-  #     - output.elasticsearch.ssl.verification_mode=none
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "todolist"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
     hostname: elasticsearch
@@ -39,22 +34,6 @@ services:
     volumes:
       - ./el_data:/usr/share/elasticsearch/data/
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    # networks:
-    #   - elk
-  # logstash:
-  #   image: docker.elastic.co/logstash/logstash:8.13.4
-  #   hostname: logstash
-  #   ports:
-  #     - "5044:5044"
-  #     - "9600:9600"
-  #   volumes:
-  #     - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-  #     - ./logstash.yml:/usr/share/logstash/config/logstash.yml
-  #     - ./ls_data:/usr/share/logstash/data
-  #   # networks:
-  #   #   - elk
-  #   depends_on:
-  #     - elasticsearch
   kibana:
     image: docker.elastic.co/kibana/kibana:8.13.4
     hostname: kibana
@@ -63,10 +42,15 @@ services:
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
       - ./kb_data:/usr/share/kibana/data
-    # networks:
-    #   - elk
     depends_on:
       - elasticsearch
-networks:
-  elk:
-    driver: bridge
+  api: 
+    build:
+      context:  ./src/TodoList.Api/
+    hostname: api
+    ports:
+      - "9000:9000"
+    depends_on:
+    - rabbitmq
+    - sqlserver
+    - elasticsearch

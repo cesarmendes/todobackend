@@ -4,7 +4,6 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<UserSecretsId>dotnet-TodoList.Worker-7e7e9a67-2bf6-4742-aa8e-aab126fef159</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

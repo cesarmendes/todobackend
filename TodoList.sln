@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Worker", "src\TodoList.Worker\TodoList.Worker.csproj", "{C464DBA8-EA88-456A-AF08-09F5EA2F7482}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "todolist.web", "TodoList.Web\todolist.web.esproj", "{44E7981F-D3B5-44D3-9249-33567DF22450}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "todolist.web", "src\TodoList.Web\todolist.web.esproj", "{44E7981F-D3B5-44D3-9249-33567DF22450}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -102,10 +102,10 @@ const Home = () => {
         .catch(error => {
              if(error.response.status === 400) {
                  setValidation(error.response.data);
-             } else if(error.response.status === 404) {
-                 console.log(error.response.data);
+             } else if(error.response.status === 409) {
+                setMessage({open: true, value: error.response.data.detail, severity: "error"});
              } else {
-                 console.log(error);
+                setMessage({open: true, value: 'Aconteceu um erro inesperado, tente novamente mais tarde!', severity: "error"});
              }
         })
     }
@@ -126,10 +126,10 @@ const Home = () => {
         .catch(error => {
             if(error.response.status === 400) {
                 setValidation(error.response.data);
-            } else if(error.response.status === 404) {
-                console.log(error.response.data);
+            } else if(error.response.status === 409) {
+                setMessage({open: true, value: error.response.data.detail, severity: "error"});
             } else {
-                console.log(error);
+                setMessage({open: true, value: 'Aconteceu um erro inesperado, tente novamente mais tarde!', severity: "error"});
             }
         })
     }

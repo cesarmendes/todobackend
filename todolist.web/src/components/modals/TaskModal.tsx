@@ -23,10 +23,9 @@ const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, errors, onModa
 
     const onSaveClick = () => {
         if(onModalSaveClick){
-            if(mode === "update") {
-                onModalSaveClick(task);
-            } else {
-                onModalSaveClick(task);
+            onModalSaveClick(task);
+
+            if(mode !== "update") {
                 setTask(defaultTask);   
             }
         }

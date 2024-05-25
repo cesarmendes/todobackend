@@ -1,4 +1,4 @@
-import { Card, CardContent, IconButton, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, Typography, Pagination, Stack } from "@mui/material";
+import { Card, CardContent, IconButton, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Tooltip, Typography, Pagination, Skeleton, Stack } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -6,13 +6,14 @@ import Task from "../../models/Task";
 import Paginated from "../../models/Paginated";
 
 interface TaskTableProps {
+    loading?: boolean;
     paginated?: Paginated<Task>;
     onEditClick?: (task: Task) => void;
     onDeleteClick?: (task: Task) => void;
     onPageChange?: (page: number) => void;
   }
 
-const TaskTable : React.FC<TaskTableProps> = ({paginated, onEditClick, onDeleteClick, onPageChange}) => {
+const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, onDeleteClick, onPageChange}) => {
     const style = {table:{marginBottom:3}, tableCell: {fontWeight: "bold"}};
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -37,6 +38,7 @@ const TaskTable : React.FC<TaskTableProps> = ({paginated, onEditClick, onDeleteC
                         </TableHead>
                         <TableBody>
                             {
+                                !loading ?
                                 paginated && paginated.items?.length > 0 ?
                                 paginated.items.map(task => (
                                     <TableRow key={task.id}>
@@ -64,6 +66,29 @@ const TaskTable : React.FC<TaskTableProps> = ({paginated, onEditClick, onDeleteC
                                         <Typography>Nenhuma tarefa foi encontrada</Typography>
                                     </TableCell>
                                 </TableRow>
+                                :
+                                <>
+                                    <TableRow>
+                                        <TableCell colSpan={5}>
+                                            <Skeleton variant="rectangular" height={50}/>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell colSpan={5}>
+                                            <Skeleton variant="rectangular" height={50}/>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell colSpan={5}>
+                                            <Skeleton variant="rectangular" height={50}/>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell colSpan={5}>
+                                            <Skeleton variant="rectangular" height={50}/>
+                                        </TableCell>
+                                    </TableRow>
+                                </>
                             }
                       
                         </TableBody>

@@ -11,14 +11,10 @@ const Header = () => {
             <AppBar component="nav" position="relative">
                 <Container>
                     <Toolbar disableGutters>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Todo List
-                        </Typography>
                         <Button color="inherit" component={Link} to="/">
-                            Inicio
-                        </Button>
-                        <Button color="inherit" component={Link} to="/login">
-                            Login
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                Todo List
+                            </Typography>
                         </Button>
                     </Toolbar>
                 </Container>

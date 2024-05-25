@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Container, Snackbar, Typography } from '@mui/material';
+import { Alert, Container, Snackbar, Typography } from '@mui/material';
 
 import TaskTable from '../components/tables/TaskTable';
 import HomeHeader from '../components/headers/HomeHeader';
@@ -15,35 +15,53 @@ import TaskDialog from '../components/dialogs/TaskDialog';
 const Home = () => {
     const taskService = new TaskService();
 
+    const [searchLoading, setSearchLoading] = useState<boolean>(false);
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
     const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [message, setMessage] = useState<Message>({open: false, value: '', severity: "success" });
-    const [task, setTask] = useState<Task>();
+    const [taskEdit, setTaskEdit] = useState<Task>();
     const [taskDelete, setTaskDelete] = useState<Task>();
     const [name, setName] = useState<string>('');
     const [paginated, setPaginated] = useState<Paginated<Task>>();
     const [validation, setValidation] = useState<ValidationError>();
 
-    const onSearchClick = async (name: string) => {
-        const response = await taskService.searchAsync(name, 1);
+    const onSearchClick = (name: string) => {
+        setSearchLoading(true);
         setName(name);
-        setPaginated(response.data);
+        
+        taskService.searchAsync(name, 1)
+        .then(response => {
+            setPaginated(response.data);
+        })
+        .catch(error => console.log(error))
+        .finally(() => {
+            setSearchLoading(false);
+        });
     };
 
     const onClearClick = async () => {
-        const response = await taskService.searchAsync('', 1);
-        setPaginated(response.data);
+        onSearchClick('');
     };
 
-    const onPageChange = async (page: number) => {
+    const onPageChange = (page: number) => {
         if (page !== paginated?.pageNumber) {
-            const response = await taskService.searchAsync(name, page);
-            setPaginated(response.data);    
+            setSearchLoading(true);
+
+            taskService.searchAsync(name, page)
+            .then(response => {
+                setPaginated(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            .finally(() => {
+                setSearchLoading(false);
+            });
         }
     }
 
     const onEditClick = (task: Task) => {
-        setTask(task);
+        setTaskEdit(task);
         setOpenUpdateModal(true);
         console.log(task);
     }
@@ -57,27 +75,29 @@ const Home = () => {
 
     const onDialogSaveClick = () => {
         if(taskDelete) {
-            taskService.removeAsync(taskDelete.id)
-                       .catch(error => console.log(error))
-                       .then(response => {
-                            console.log(response);
-                            setMessage({open: true, value: `Tarefa '${taskDelete.title}' excluída com sucesso!`, severity: "success"});
-                            setTaskDelete(undefined);
-                        });
+            taskService
+            .removeAsync(taskDelete.id)
+            .then(response => {
+                onSearchClick(name);
+                setMessage({open: true, value: `Tarefa '${response.data.title}' excluída com sucesso!`, severity: "success"});
+                setTaskDelete(undefined);
+            })
+            .catch(error => console.log(error));
         }
     };
     
     const onCreateModalCloseClick = () => {
-        setOpenCreateModal(false);
         setValidation(undefined);
+        setOpenCreateModal(false);
     }
 
     const onCreateModalSaveClick = (task: Task) => {
         taskService.createAsync(task)
         .then(response => {
+            setValidation(undefined);
             setOpenCreateModal(false);
             setMessage({open: true, value: `Tarefa '${response.data.title}' adicionada com sucesso!`, severity: "success"});
-        
+            onSearchClick(name);
         })
         .catch(error => {
              if(error.response.status === 400) {
@@ -91,13 +111,27 @@ const Home = () => {
     }
 
     const onUpdateModalCloseClick = () => {
-        setOpenUpdateModal(false);
         setValidation(undefined);
+        setOpenUpdateModal(false);
     }
     
     const onUpdateModalSaveClick = (task: Task) => {
-        console.log(task);
-
+        taskService.updateAsync(task)
+        .then(response => {
+            setValidation(undefined);
+            setOpenUpdateModal(false);
+            setMessage({open: true, value: `Tarefa '${response.data.title}' atualizada com sucesso!`, severity: "success"});
+            onSearchClick(name);
+        })
+        .catch(error => {
+            if(error.response.status === 400) {
+                setValidation(error.response.data);
+            } else if(error.response.status === 404) {
+                console.log(error.response.data);
+            } else {
+                console.log(error);
+            }
+        })
     }
 
     useEffect(() => {
@@ -109,15 +143,15 @@ const Home = () => {
         <Container>
             <HomeHeader onButtonClick={()=> setOpenCreateModal(true)}/>
             <TaskFilter onSearchClick={onSearchClick} onClearClick={onClearClick}/>
-            <TaskTable paginated={paginated} onDeleteClick={onDeleteClick} onEditClick={onEditClick} onPageChange={onPageChange}/>
+            <TaskTable loading={searchLoading} paginated={paginated} onDeleteClick={onDeleteClick} onEditClick={onEditClick} onPageChange={onPageChange}/>
             <TaskModal open={openCreateModal} mode="create" errors={validation?.errors} onModalSaveClick={onCreateModalSaveClick} onModalCloseClick={onCreateModalCloseClick}/>
-            <TaskModal open={openUpdateModal} mode="update" value={task} onModalSaveClick={onUpdateModalSaveClick} onModalCloseClick={onUpdateModalCloseClick}/>
-            <Snackbar open={message.open} anchorOrigin={{horizontal: "center", vertical: "top"}} autoHideDuration={5000}>
-                <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{}}>
+            <TaskModal open={openUpdateModal} mode="update" errors={validation?.errors} value={taskEdit} onModalSaveClick={onUpdateModalSaveClick} onModalCloseClick={onUpdateModalCloseClick}/>
+            <Snackbar open={message.open} anchorOrigin={{horizontal: "center", vertical: "top"}} autoHideDuration={5000} onClose={()=>{setMessage({open: false, severity: message.severity, value:''})}}>
+                <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{setMessage({open: false, severity: message.severity, value:''});console.log('fechou');}}>
                     <Typography variant='body1' component="div">{message.value}</Typography>
                 </Alert>
             </Snackbar>
-            <TaskDialog title='Excluir tarefa' description='Deseja realmente excluir a tarefa?' value={taskDelete} btnOk='Salvar' btnCancel='Cancelar' onDialogCloseClick={onDialogCloseClick} onDialogSaveClick={onDialogSaveClick} />
+            <TaskDialog title='Excluir tarefa' description='Deseja realmente excluir a tarefa?' value={taskDelete} btnOk='Excluir' btnCancel='Cancelar' onDialogCloseClick={onDialogCloseClick} onDialogSaveClick={onDialogSaveClick} />
         </Container>
     );
 };

@@ -19,12 +19,13 @@ class TaskService extends ApiService {
     }
 
     updateAsync(task: Task) : Promise<AxiosResponse<Task>> {
+        console.log(task);
         return super.putAsync<Task>(`v1/api/tasks`, task);
     }
 
     removeAsync(id: number) : Promise<AxiosResponse<Task>> 
     {
-        return super.deleteAsync<Task>('v1/api/tasks', {id: id, title: '', description: '', status: '', statusId: 0});
+        return super.deleteAsync<Task>('v1/api/tasks', {id: id, title: '', description: '', status: '', statusId: 0, startDate: new Date(), targetDate: new Date()});
     }
 }
 

@@ -8,17 +8,19 @@ namespace TodoList.Api.Transports.Tasks.Search
         public string Title { get; set; }
         public string Description { get; set; }
         public int StatusId { get; set; }
-        public DateTime CreateAt { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime TargetDate { get; set; }
 
         public static TaskResponse From(Task task) 
         {
             return new TaskResponse 
             { 
                 Id = task.Id, 
-                CreateAt = task.CreateAt, 
                 Description = task.Description, 
                 StatusId = task.StatusId, 
-                Title = task.Title 
+                Title = task.Title,
+                StartDate = task.StartDate,
+                TargetDate = task.TargetDate,
             };
         }
 

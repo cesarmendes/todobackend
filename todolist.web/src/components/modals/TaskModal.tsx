@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react';
 import { Button,  Container, Backdrop, Grid, AppBar, Toolbar, Stack, Card, CardContent, CardHeader, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
+import { ptBR } from '@mui/x-date-pickers/locales';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Status from '../../models/Status';
-import StatusService from '../../services/StatusService';
 import Task from '../../models/Task';
+import dayjs from 'dayjs';
+
 
 interface TaskModalProps {
     open?: boolean;
     value?: Task;
     mode?: 'create' | 'update';
+    status?: Status[];
     errors?: {[key: string]: string[]};
     onModalSaveClick?: (task: Task) => void;
     onModalCloseClick?:() => void;
 }
 
-const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, errors, onModalSaveClick, onModalCloseClick}) => {
-    const  defaultTask = {id: 0, title: "", description: "", statusId: 0};
-
-    const statusService = new StatusService();
+const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, status, errors, onModalSaveClick, onModalCloseClick}) => {
+    const  defaultTask = {id: 0, title: "", description: "", statusId: 0, startDate: new Date(), targetDate: new Date()};
 
     const [task, setTask] = useState<Task>(value ?? defaultTask);
-    const [status, setStatus] = useState<Status[]>([]);
 
     const onSaveClick = () => {
         if(onModalSaveClick){
@@ -37,11 +40,6 @@ const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, errors, onModa
             setTask(defaultTask);
         }
     }
-
-    useEffect(() => {
-        statusService.searchAsync('')
-                     .then(response => setStatus(response.data.items));
-    },[]);
 
     useEffect(() => {
         if (value && value !== task) {
@@ -79,6 +77,19 @@ const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, errors, onModa
                                         <FormHelperText>{errors && errors["StatusId"]?.length > 0 && errors["StatusId"][0]}</FormHelperText>
                                     </FormControl>
                                 </Grid> 
+                                <Grid item xs={12} lg={6}>
+                                    <LocalizationProvider localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText} dateAdapter={AdapterDayjs}>
+                                        <DatePicker label="Data de início" value={dayjs(task.startDate)} onChange={(newValue) => setTask({...task, startDate: dayjs(newValue).toDate()})} format='DD/MM/YYYY' sx={{width:'100%'}}/>
+                                    </LocalizationProvider>
+                                </Grid>
+                                <Grid item xs={12} lg={6}>
+                                    <FormControl error={errors && errors["TargetDate"]?.length > 0} fullWidth>
+                                        <LocalizationProvider localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText} dateAdapter={AdapterDayjs}>
+                                            <DatePicker label="Data de entrega" minDate={dayjs(task.startDate)} value={dayjs(task.targetDate)} onChange={(newValue) => setTask({...task, targetDate: dayjs(newValue).toDate()})} format='DD/MM/YYYY' sx={{width:'100%'}}/>
+                                        </LocalizationProvider>
+                                        <FormHelperText>{errors && errors["TargetDate"]?.length > 0 && errors["TargetDate"][0]}</FormHelperText>
+                                    </FormControl>
+                                </Grid>
                                 <Grid item xs={12}>
                                     <TextField label="Descrição" value={task.description} onChange={(event) =>  setTask({...task, description: event.target.value})} error={errors && errors["Description"]?.length > 0} helperText={errors && errors["Description"]?.length > 0 && errors["Description"][0]} minRows={4} multiline fullWidth/>
                                 </Grid>   

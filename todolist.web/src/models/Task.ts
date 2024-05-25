@@ -3,7 +3,9 @@ interface Task {
     title: string;
     description: string;
     statusId: number;
-    status?: string
+    status?: string;
+    startDate: Date;
+    targetDate: Date;
 }
 
 export default Task;

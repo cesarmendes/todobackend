@@ -50,6 +50,9 @@ namespace TodoList.UserCases.Tasks.Update
             task.Title = request.Title;
             task.Description = request.Description;
             task.StatusId = request.StatusId;
+            task.StartDate = request.StartDate;
+            task.TargetDate = request.TargetDate;
+            task.UpdatedAt = DateTime.Now;
 
             await _taskRepository.UpdateAsync(task);
 

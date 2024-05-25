@@ -21,13 +21,23 @@ namespace TodoList.Api.Transports.Tasks.Create
         [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
         public int StatusId { get; set; }
 
+        [DataType(DataType.Date)]
+        [Required(ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
+        public DateTime? StartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [Required(ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
+        public DateTime? TargetDate { get; set; }
+
         public CreateTaskCommand AsCommand() 
         { 
             return new CreateTaskCommand() 
             {
                 Title = Title,
                 Description = Description,
-                StatusId = StatusId
+                StatusId = StatusId,
+                StartDate = StartDate ?? DateTime.MinValue,
+                TargetDate = TargetDate ?? DateTime.MinValue,
             }; 
         }
     }

@@ -17,9 +17,25 @@ namespace TodoList.Api.Transports.Tasks.Update
         [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
         public int StatusId { get; set; }
 
+        [DataType(DataType.Date)]
+        [Required(ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
+        public DateTime? StartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [Required(ErrorMessageResourceType = typeof(ValidationInput), ErrorMessageResourceName = nameof(ValidationInput.Required))]
+        public DateTime? TargetDate { get; set; }
+
         public UpdateTaskCommand AsCommand()
         {
-            return new UpdateTaskCommand { Id = Id, Title = Title, Description = Description, StatusId = StatusId };
+            return new UpdateTaskCommand 
+            { 
+                Id = Id, 
+                Title = Title, 
+                Description = Description, 
+                StatusId = StatusId, 
+                StartDate = StartDate ?? DateTime.MinValue, 
+                TargetDate = TargetDate ?? DateTime.MinValue,
+            };
         }
     }
 }

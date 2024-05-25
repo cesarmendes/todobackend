@@ -42,7 +42,9 @@ namespace TodoList.UserCases.Tasks.Create
                 StatusId = status.Id,
                 Title = request.Title,
                 Description = request.Description,
-                CreateAt = DateTime.Now
+                StartDate = request.StartDate,      
+                TargetDate = request.TargetDate,
+                CreatedAt = DateTime.Now
             };
 
             await _taskRepository.InsertAsync(task);

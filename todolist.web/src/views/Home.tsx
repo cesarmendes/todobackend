@@ -11,9 +11,12 @@ import ValidationError from '../models/ValidationError';
 import Message from '../models/Message';
 import Paginated from '../models/Paginated';
 import TaskDialog from '../components/dialogs/TaskDialog';
+import StatusService from '../services/StatusService';
+import Status from '../models/Status';
 
 const Home = () => {
     const taskService = new TaskService();
+    const statusService = new StatusService();
 
     const [searchLoading, setSearchLoading] = useState<boolean>(false);
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
@@ -24,6 +27,7 @@ const Home = () => {
     const [name, setName] = useState<string>('');
     const [paginated, setPaginated] = useState<Paginated<Task>>();
     const [validation, setValidation] = useState<ValidationError>();
+    const [status, setStatus] = useState<Status[]>([]);
 
     const onSearchClick = (name: string) => {
         setSearchLoading(true);
@@ -137,6 +141,9 @@ const Home = () => {
     useEffect(() => {
         taskService.searchAsync('', 1)
                    .then(response => setPaginated(response.data));
+        
+        statusService.searchAsync('')
+                     .then(response => setStatus(response.data.items));
     }, []);
 
     return (
@@ -144,8 +151,8 @@ const Home = () => {
             <HomeHeader onButtonClick={()=> setOpenCreateModal(true)}/>
             <TaskFilter onSearchClick={onSearchClick} onClearClick={onClearClick}/>
             <TaskTable loading={searchLoading} paginated={paginated} onDeleteClick={onDeleteClick} onEditClick={onEditClick} onPageChange={onPageChange}/>
-            <TaskModal open={openCreateModal} mode="create" errors={validation?.errors} onModalSaveClick={onCreateModalSaveClick} onModalCloseClick={onCreateModalCloseClick}/>
-            <TaskModal open={openUpdateModal} mode="update" errors={validation?.errors} value={taskEdit} onModalSaveClick={onUpdateModalSaveClick} onModalCloseClick={onUpdateModalCloseClick}/>
+            <TaskModal open={openCreateModal} mode="create" status={status} errors={validation?.errors} onModalSaveClick={onCreateModalSaveClick} onModalCloseClick={onCreateModalCloseClick}/>
+            <TaskModal open={openUpdateModal} mode="update" status={status} errors={validation?.errors} value={taskEdit} onModalSaveClick={onUpdateModalSaveClick} onModalCloseClick={onUpdateModalCloseClick}/>
             <Snackbar open={message.open} anchorOrigin={{horizontal: "center", vertical: "top"}} autoHideDuration={5000} onClose={()=>{setMessage({open: false, severity: message.severity, value:''})}}>
                 <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{setMessage({open: false, severity: message.severity, value:''});console.log('fechou');}}>
                     <Typography variant='body1' component="div">{message.value}</Typography>

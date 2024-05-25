@@ -40,10 +40,31 @@ namespace TodoList.Infrastructure.Data.Configurations
                    .HasColumnType("INT")
                    .IsRequired();
 
-            builder.Property(entity => entity.CreateAt)
+            builder.Property(entity => entity.StartDate)
+                   .HasComment("Campo com os valores da data de início da tarefa")
+                   .HasColumnName("DATA_INICIO")
+                   .HasColumnType("DATETIME2")
+                   .HasDefaultValue(DateTime.Now)
+                   .IsRequired();
+
+            builder.Property(entity => entity.TargetDate)
+                   .HasComment("Campo com os valores da data de entrega da tarefa")
+                   .HasColumnName("DATA_ENTREGA")
+                   .HasColumnType("DATETIME2")
+                   .HasDefaultValue(DateTime.Now)
+                   .IsRequired();
+
+            builder.Property(entity => entity.CreatedAt)
                    .HasComment("Campo com os valores da data de criação da tarefa.")
                    .HasColumnName("CRIADO_EM")
-                   .HasColumnType("DATETIME")
+                   .HasColumnType("DATETIME2")
+                   .HasDefaultValue(DateTime.Now)
+                   .IsRequired();
+
+            builder.Property(entity => entity.UpdatedAt)
+                   .HasComment("Campo com os valores da data de atualização da tarefa.")
+                   .HasColumnName("ATUALIZADO_EM")
+                   .HasColumnType("DATETIME2")
                    .HasDefaultValue(DateTime.Now)
                    .IsRequired();
 

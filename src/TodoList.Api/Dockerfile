@@ -13,7 +13,7 @@ RUN ls -la
 RUN dotnet restore ./TodoList.Api/TodoList.Api.csproj
 RUN dotnet build ./TodoList.Api/TodoList.Api.csproj -c $BUILD_CONFIGURATION -o /app/build
 RUN dotnet tool install --global dotnet-ef --version 7.0.19
-ENV PATH="$PATH:/root/.dotnet/tools"
+# ENV PATH="$PATH:/root/.dotnet/tools"
 # WORKDIR /src/TodoList.Api
 # RUN dotnet-ef database update --configuration appsettings.Production.json
 

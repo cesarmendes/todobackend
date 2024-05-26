@@ -13,6 +13,7 @@ services:
       RABBITMQ_ERLANG_COOKIE: "ErlangCookie"
     volumes:
       - ./rb_data:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
@@ -52,7 +53,8 @@ services:
       - "3000:3000"
   api: 
     build:
-      context:  .
+      context:  /
+      dockerfile: src/TodoList.Api/Dockerfile
     hostname: api
     ports:
       - "9000:9000"

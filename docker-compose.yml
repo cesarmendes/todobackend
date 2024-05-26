@@ -16,7 +16,7 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-      SA_PASSWORD: "todolist"
+      SA_PASSWORD: "todolist123!"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
@@ -50,13 +50,13 @@ services:
     hostname: web
     ports:
       - "3000:3000"
-  # api: 
-  #   build:
-  #     context:  src/TodoList.Api/
-  #   hostname: api
-  #   ports:
-  #     - "9000:9000"
-  #   depends_on:
-  #   - rabbitmq
-  #   - sqlserver
-  #   - elasticsearch
+  api: 
+    build:
+      context:  .
+    hostname: api
+    ports:
+      - "9000:9000"
+    depends_on:
+    - rabbitmq
+    - sqlserver
+    - elasticsearch

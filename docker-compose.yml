@@ -44,9 +44,15 @@ services:
       - ./kb_data:/usr/share/kibana/data
     depends_on:
       - elasticsearch
+  web:
+    build:
+      context: src/todolist.web
+    hostname: web
+    ports:
+      - "8000:8000"
   api: 
     build:
-      context:  ./src/TodoList.Api/
+      context:  src/TodoList.Api/
     hostname: api
     ports:
       - "9000:9000"

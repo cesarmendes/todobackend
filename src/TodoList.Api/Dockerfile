@@ -7,20 +7,18 @@ EXPOSE 9000
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TodoList.Api/TodoList.Api.csproj", "TodoList.Api/"]
-RUN dotnet restore "./TodoList.Api/TodoList.Api.csproj"
-COPY . .
-WORKDIR "/src/TodoList.Api"
-RUN dotnet build "./TodoList.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
-#RUN dotnet tool install --global dotnet-ef
-#ENV PATH="$PATH:/root/.dotnet/tools"
-#RUN dotnet-ef database update --configuration appsettings.Production.json
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./TodoList.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TodoList.Api.dll"]
+COPY ../* .
+RUN dotnet restore
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
+##RUN dotnet tool install --global dotnet-ef
+##ENV PATH="$PATH:/root/.dotnet/tools"
+##RUN dotnet-ef database update --configuration appsettings.Production.json
+#
+#FROM build AS publish
+#ARG BUILD_CONFIGURATION=Release
+#RUN dotnet publish "./TodoList.Api/TodoList.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+#
+#FROM base AS final
+#WORKDIR /app
+#COPY --from=publish /app/publish .
+#ENTRYPOINT ["dotnet", "TodoList.Api.dll"]

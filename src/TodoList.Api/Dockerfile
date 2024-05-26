@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ../* .
-RUN dotnet restore
+RUN dotnet restore ./TodoList.Api/TodoList.Api.csproj
 RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 ##RUN dotnet tool install --global dotnet-ef
 ##ENV PATH="$PATH:/root/.dotnet/tools"

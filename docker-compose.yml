@@ -49,14 +49,14 @@ services:
       context: src/todolist.web
     hostname: web
     ports:
-      - "8000:8000"
-  api: 
-    build:
-      context:  src/TodoList.Api/
-    hostname: api
-    ports:
-      - "9000:9000"
-    depends_on:
-    - rabbitmq
-    - sqlserver
-    - elasticsearch
+      - "3000:3000"
+  # api: 
+  #   build:
+  #     context:  src/TodoList.Api/
+  #   hostname: api
+  #   ports:
+  #     - "9000:9000"
+  #   depends_on:
+  #   - rabbitmq
+  #   - sqlserver
+  #   - elasticsearch

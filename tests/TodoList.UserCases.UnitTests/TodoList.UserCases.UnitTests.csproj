@@ -29,9 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tasks\Delete\" />
     <Folder Include="Tasks\Get\" />
-    <Folder Include="Tasks\Update\" />
   </ItemGroup>
 
 </Project>

@@ -4,8 +4,6 @@ using TodoList.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 builder.Host.UseSerilog((hostContext, services, configuration) => {
     configuration.ReadFrom.Configuration(builder.Configuration);
 });

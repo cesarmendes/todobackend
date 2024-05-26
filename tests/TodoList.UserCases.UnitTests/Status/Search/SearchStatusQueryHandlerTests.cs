@@ -9,7 +9,7 @@ namespace TodoList.UserCases.UnitTests.Status.Search
     public class SearchStatusQueryHandlerTests
     {
         [Fact()]
-        public async Task Handle_WhenNoMatchingStatusesFound_ReturnsEmptyPaginatedList()
+        public async Task WhenNoMatchingStatusesFound_ReturnsEmptyPaginatedList()
         {
             // Arrange
             var mockStatusRepository = new Mock<IStatusRepository>();

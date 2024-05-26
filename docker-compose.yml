@@ -8,8 +8,6 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: todolist
-      RABBITMQ_DEFAULT_PASS: todolist
       RABBITMQ_ERLANG_COOKIE: "ErlangCookie"
     volumes:
       - ./rb_data:/var/lib/rabbitmq
@@ -45,19 +43,31 @@ services:
       - ./kb_data:/usr/share/kibana/data
     depends_on:
       - elasticsearch
-  web:
-    build:
-      context: src/todolist.web
-    hostname: web
-    ports:
-      - "3000:3000"
-  api: 
+  # web:
+  #   image: web
+  #   build:
+  #     context: src/todolist.web
+  #   hostname: web
+  #   ports:
+  #     - "3000:3000"
+  api:
+    image: api 
     build:
       context:  /
       dockerfile: src/TodoList.Api/Dockerfile
     hostname: api
     ports:
       - "9000:9000"
+    depends_on:
+    - rabbitmq
+    - sqlserver
+    - elasticsearch
+  worker:
+    image: worker 
+    build:
+      context:  /
+      dockerfile: src/TodoList.Worker/Dockerfile
+    hostname: worker
     depends_on:
     - rabbitmq
     - sqlserver

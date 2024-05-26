@@ -9,7 +9,7 @@ using Task = TodoList.Core.Tasks.Aggregates.Task;
 
 namespace TodoList.UserCases.Tasks.Create
 {
-    internal class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Result<Task>>
+    public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, Result<Task>>
     {
         private readonly IBus _bus;
         private readonly IStatusRepository _statusRepository;

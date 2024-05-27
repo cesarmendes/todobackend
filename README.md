@@ -36,7 +36,10 @@ cd todobackend
 ```sh 
 docker-compose up
 ```
-4 - Se conecte ao servidor de banco de dados que está rodando localmente, utilizando o Sql Server Management Studio crie uma conexão utilizando 'Autenticação do Sql Server' e forneça o usuário 'SA' e senha 'todolist123!'
+4 - Se conecte ao servidor de banco de dados que está rodando localmente, utilizando o Sql Server Management Studio crie uma conexão utilizando 'Autenticação do Sql Server' e forneça as credenciais
+```sh
+usuário 'SA' e senha 'todolist123!'
+```
 5 - Ainda no SSMS, abra o arquivo scripts.sql que foi gerado via EF Migrations e execute o script para criar banco de dados e tabelas necessárias para o projeto.  
 
 ## ⚙️ Links para utilizar

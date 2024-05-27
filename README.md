@@ -26,11 +26,11 @@ Siga as instruções abaixo para executar o projeto TODOLIST
 
 1 - Clone o repositório do projeto 
 ```sh 
-git clone https://github.com/cesarmendes/todobackend 
+git clone https://github.com/cesarmendes/todolist 
 ```
 2 - Através de um terminal de prompt, entre na pasta raiz do projeto e certifique-se de estar no mesmo nível do arquivo docker-compose.yml 
 ```sh 
-cd todobackend
+cd todolist
 ```
 3 - Utilize o Docker Compose para subir os serviços necessários 
 ```sh 

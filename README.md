@@ -24,9 +24,18 @@ da base de dados.
 
 Siga as instruções abaixo para executar o projeto TODOLIST
 
-1 - Clone o repositório do projeto ```sh git clone https://github.com/cesarmendes/todobackend ```
-2 - Através de um terminal de prompt, entre na pasta raiz do projeto e certifique-se de estar no mesmo nível do arquivo docker-compose.yml ```sh cd todobackend```
-3 - Utilize o Docker Compose para subir os serviços necessários ```sh docker-compose up```
+1 - Clone o repositório do projeto 
+```sh 
+git clone https://github.com/cesarmendes/todobackend 
+```
+2 - Através de um terminal de prompt, entre na pasta raiz do projeto e certifique-se de estar no mesmo nível do arquivo docker-compose.yml 
+```sh 
+cd todobackend
+```
+3 - Utilize o Docker Compose para subir os serviços necessários 
+```sh 
+docker-compose up
+```
 4 - Se conecte ao servidor de banco de dados que está rodando localmente, utilizando o Sql Server Management Studio crie uma conexão utilizando 'Autenticação do Sql Server' e forneça o usuário 'SA' e senha 'todolist123!'
 5 - Ainda no SSMS, abra o arquivo scripts.sql que foi gerado via EF Migrations e execute o script para criar banco de dados e tabelas necessárias para o projeto.  
 

@@ -2,23 +2,31 @@ version: "3.8"
 
 services:
   rabbitmq:
-    image: rabbitmq:3.9-management-alpine
+    image: rabbitmq:3.12.14-management-alpine
     hostname: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
     environment:
       RABBITMQ_ERLANG_COOKIE: "ErlangCookie"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
     volumes:
       - ./rb_data:/var/lib/rabbitmq
       - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
+      MSSQL_PID: "Express"
       SA_PASSWORD: "todolist123!"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+    volumes:
+      - ./sqldata:/var/opt/mssql/data
+      - ./scripts.sql:/var/opt/mssql/scripts/scripts.sql
+    restart: always
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
     hostname: elasticsearch
@@ -43,13 +51,7 @@ services:
       - ./kb_data:/usr/share/kibana/data
     depends_on:
       - elasticsearch
-  # web:
-  #   image: web
-  #   build:
-  #     context: src/todolist.web
-  #   hostname: web
-  #   ports:
-  #     - "3000:3000"
+
   api:
     image: api 
     build:
@@ -57,8 +59,9 @@ services:
       dockerfile: src/TodoList.Api/Dockerfile
     hostname: api
     ports:
-      - "9000:9000"
+      - "9000:80"
     depends_on:
+    - kibana
     - rabbitmq
     - sqlserver
     - elasticsearch
@@ -69,6 +72,16 @@ services:
       dockerfile: src/TodoList.Worker/Dockerfile
     hostname: worker
     depends_on:
+    - kibana
     - rabbitmq
     - sqlserver
     - elasticsearch
+  web:
+    image: web
+    build:
+      context: src/todolist.web
+    hostname: web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api

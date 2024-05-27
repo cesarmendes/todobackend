@@ -45,47 +45,23 @@ usuário 'SA' e senha 'todolist123!'
 ## ⚙️ Links para utilizar
 
 Quando a instalação estiver conclúida, o usuário poderá ter acesso ao sistema e os recuros de backend através dos links abaixo:
-[Frontend](http://localhost:8080/)
-[Api](http://localhost:5000/swagger/index.html)
-[Kibana](http://localhost:5601/app/home#/)
-[RabbitMQ](http://localhost:15672/)
+
+* [Frontend](http://localhost:8080/) - Acesse para cadastrar e listar tarefas
+* [Api](http://localhost:5000/swagger/index.html) - Acesse para ter acesso ao Swagger da Api
+* [Kibana](http://localhost:5601/app/home#/) - Acesse para ter acesso aos logs das aplicações Api e Worker
+* [RabbitMQ](http://localhost:15672/) - Acesse para ter acesso na filas dos serviços, usuário e senha 'rabbitmq'
 
 ## 🛠️ Construído com
 
-Mencione as ferramentas que você usou para criar seu projeto
+Para a construção desse projeto, foram utlizados as ferramentas listadas abaixo:
 
-* [React](https://react.dev/) - O framework web usado
-* [MUI](https://mui.com/) - Biblioteca de componentes visuais
-* [ROME](https://rometools.github.io/rome/) - Usada para gerar RSS
+* [React 18](https://react.dev/) - O framework de frontend SPA utilizado foi o React 18
+* [MUI 5.15.18](https://mui.com/) - A biblioteca de componentes visuais MUI 5.15.18 para React
+* [Typescript](https://www.typescriptlang.org/) - A linguagem foi utilizado typescript
+* [Asp.NET Core 6](https://learn.microsoft.com/pt-br/aspnet/core/release-notes/aspnetcore-6.0?view=aspnetcore-6.0) - O framework para construção de APIs foi utilizado o Asp.NET Core 6. 
+* [Entity Framework](https://learn.microsoft.com/en-us/ef/) - O ORM utilizado para manipulação de base de dados foi utilizado o Entity Framework 6
+* [RabbitMQ](https://www.rabbitmq.com/docs) - O Broker de mensagens foi utilizdo o RabbitMQ com a biblioteca MassTransit
+* [Sql Server Express](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) - A base de dados relacional foi utilizado o Sql Server Express.
+* [ElasticSearch](https://www.elastic.co/pt/elasticsearch) - A base de dados para ingestão de logs foi utilizado o ElasticSearch
+* [Kibana](https://www.elastic.co/pt/kibana) - A ferramenta de analise de dados foi utilizado o Kibana para visualizar os logs
 
-## 🖇️ Colaborando
-
-Por favor, leia o [COLABORACAO.md](https://gist.github.com/usuario/linkParaInfoSobreContribuicoes) para obter detalhes sobre o nosso código de conduta e o processo para nos enviar pedidos de solicitação.
-
-## 📌 Versão
-
-Nós usamos [SemVer](http://semver.org/) para controle de versão. Para as versões disponíveis, observe as [tags neste repositório](https://github.com/suas/tags/do/projeto). 
-
-## ✒️ Autores
-
-Mencione todos aqueles que ajudaram a levantar o projeto desde o seu início
-
-* **Um desenvolvedor** - *Trabalho Inicial* - [umdesenvolvedor](https://github.com/linkParaPerfil)
-* **Fulano De Tal** - *Documentação* - [fulanodetal](https://github.com/linkParaPerfil)
-
-Você também pode ver a lista de todos os [colaboradores](https://github.com/usuario/projeto/colaboradores) que participaram deste projeto.
-
-## 📄 Licença
-
-Este projeto está sob a licença (sua licença) - veja o arquivo [LICENSE.md](https://github.com/usuario/projeto/licenca) para detalhes.
-
-## 🎁 Expressões de gratidão
-
-* Conte a outras pessoas sobre este projeto 📢;
-* Convide alguém da equipe para uma cerveja 🍺;
-* Um agradecimento publicamente 🫂;
-* etc.
-
-
----
-⌨️ com ❤️ por [Armstrong Lohãns](https://gist.github.com/lohhans) 😊

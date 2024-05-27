@@ -10,68 +10,40 @@ necessário atender as seguintes condições:
 - Utilização de framework de persistência.
 - Banco de dados livre.
 
-## 🚀 Começando
-
-Essas instruções permitirão que você obtenha uma cópia do projeto em operação na sua máquina local para fins de desenvolvimento e teste.
-
-Consulte **[Implantação](#-implanta%C3%A7%C3%A3o)** para saber como implantar o projeto.
-
 ### 📋 Pré-requisitos
 
-De que coisas você precisa para instalar o software e como instalá-lo?
+Para rodar o projeto e utilizar, será necessário ter o Docker Desktop instalado na máquina ou ferramenta similar que permita
+acesso aos comandos do Docker CLI que possa ser utilizado via prompt. Também será necessário o Sql Server Managment Studio para criar a estrutura
+da base de dados.
 
-```
-Dar exemplos
-```
+[Docker Desktop](https://www.docker.com/products/docker-desktop/)
+[Rancher Desktop](https://rancherdesktop.io/)
+[Sql Server Management Studio](https://learn.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
 
 ### 🔧 Instalação
 
-Uma série de exemplos passo-a-passo que informam o que você deve executar para ter um ambiente de desenvolvimento em execução.
+Siga as instruções abaixo para executar o projeto TODOLIST
 
-Diga como essa etapa será:
+1 - Clone o repositório do projeto ```sh git clone https://github.com/cesarmendes/todobackend ```
+2 - Através de um terminal de prompt, entre na pasta raiz do projeto e certifique-se de estar no mesmo nível do arquivo docker-compose.yml ```sh cd todobackend```
+3 - Utilize o Docker Compose para subir os serviços necessários ```sh docker-compose up```
+4 - Se conecte ao servidor de banco de dados que está rodando localmente, utilizando o Sql Server Management Studio crie uma conexão utilizando 'Autenticação do Sql Server' e forneça o usuário 'SA' e senha 'todolist123!'
+5 - Ainda no SSMS, abra o arquivo scripts.sql que foi gerado via EF Migrations e execute o script para criar banco de dados e tabelas necessárias para o projeto.  
 
-```
-Dar exemplos
-```
+## ⚙️ Links para utilizar
 
-E repita:
-
-```
-Até finalizar
-```
-
-Termine com um exemplo de como obter dados do sistema ou como usá-los para uma pequena demonstração.
-
-## ⚙️ Executando os testes
-
-Explicar como executar os testes automatizados para este sistema.
-
-### 🔩 Analise os testes de ponta a ponta
-
-Explique que eles verificam esses testes e porquê.
-
-```
-Dar exemplos
-```
-
-### ⌨️ E testes de estilo de codificação
-
-Explique que eles verificam esses testes e porquê.
-
-```
-Dar exemplos
-```
-
-## 📦 Implantação
-
-Adicione notas adicionais sobre como implantar isso em um sistema ativo
+Quando a instalação estiver conclúida, o usuário poderá ter acesso ao sistema e os recuros de backend através dos links abaixo:
+[Frontend](http://localhost:8080/)
+[Api](http://localhost:5000/swagger/index.html)
+[Kibana](http://localhost:5601/app/home#/)
+[RabbitMQ](http://localhost:15672/)
 
 ## 🛠️ Construído com
 
 Mencione as ferramentas que você usou para criar seu projeto
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - O framework web usado
-* [Maven](https://maven.apache.org/) - Gerente de Dependência
+* [React](https://react.dev/) - O framework web usado
+* [MUI](https://mui.com/) - Biblioteca de componentes visuais
 * [ROME](https://rometools.github.io/rome/) - Usada para gerar RSS
 
 ## 🖇️ Colaborando

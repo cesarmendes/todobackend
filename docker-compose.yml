@@ -53,12 +53,14 @@ services:
       - elasticsearch
   api:
     image: api 
+    hostname: api
     build:
       context:  /
       dockerfile: src/TodoList.Api/Dockerfile
-    hostname: api
     ports:
-      - "9000:80"
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_URLS=http://*:5000;
     depends_on:
     - kibana
     - rabbitmq
@@ -66,10 +68,10 @@ services:
     - elasticsearch
   worker:
     image: worker 
+    hostname: worker
     build:
       context:  /
       dockerfile: src/TodoList.Worker/Dockerfile
-    hostname: worker
     depends_on:
     - kibana
     - rabbitmq
@@ -77,10 +79,10 @@ services:
     - elasticsearch
   web:
     image: web
+    hostname: web
     build:
       context: src/todolist.web
-    hostname: web
     ports:
-      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - api

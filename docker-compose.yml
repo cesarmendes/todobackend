@@ -51,7 +51,6 @@ services:
       - ./kb_data:/usr/share/kibana/data
     depends_on:
       - elasticsearch
-
   api:
     image: api 
     build:

@@ -5,6 +5,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Task from "../../models/Task";
 import Paginated from "../../models/Paginated";
 
+import dayjs from 'dayjs';
+
+
 interface TaskTableProps {
     loading?: boolean;
     paginated?: Paginated<Task>;
@@ -22,6 +25,14 @@ const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, 
         onPageChange && onPageChange(value);
     };
 
+    function formatarData(date:Date) {
+        const dia = String(date.getDay()).padStart(2, '0');
+        const mes = String(date.getMonth() + 1).padStart(2, '0');
+        const ano = date.getFullYear();
+      
+        return `${dia}/${mes}/${ano}`;
+    }
+
     return (
         <Card variant="outlined">
             <CardContent>
@@ -32,7 +43,8 @@ const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, 
                                 <TableCell variant="head" sx={style.tableCell}>Id</TableCell>
                                 <TableCell variant="head" sx={style.tableCell}>Título</TableCell>
                                 <TableCell variant="head" sx={style.tableCell}>Status</TableCell>
-                                <TableCell variant="head" sx={style.tableCell}>Criado em</TableCell>
+                                <TableCell variant="head" sx={style.tableCell}>Data de início</TableCell>
+                                <TableCell variant="head" sx={style.tableCell}>Data de entrega</TableCell>
                                 <TableCell variant="head" sx={style.tableCell}></TableCell>
                             </TableRow>
                         </TableHead>
@@ -45,7 +57,8 @@ const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, 
                                         <TableCell>{task.id}</TableCell>
                                         <TableCell>{task.title}</TableCell>
                                         <TableCell>{task.status}</TableCell>
-                                        <TableCell>{task.description}</TableCell>
+                                        <TableCell>{new Intl.DateTimeFormat('pt-BR').format(new Date(task.startDate))}</TableCell>
+                                        <TableCell>{new Intl.DateTimeFormat('pt-BR').format(new Date(task.targetDate))}</TableCell>
                                         <TableCell align="center">
                                             <Tooltip title="Atualizar tarefa" onClick={() => onEditClick && onEditClick(task)}>
                                                 <IconButton aria-label="delete" color="primary">

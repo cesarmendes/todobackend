@@ -155,7 +155,7 @@ const Home = () => {
             <TaskModal open={openCreateModal} mode="create" status={status} errors={validation?.errors} onModalSaveClick={onCreateModalSaveClick} onModalCloseClick={onCreateModalCloseClick}/>
             <TaskModal open={openUpdateModal} mode="update" status={status} errors={validation?.errors} value={taskEdit} onModalSaveClick={onUpdateModalSaveClick} onModalCloseClick={onUpdateModalCloseClick}/>
             <Snackbar open={message.open} anchorOrigin={{horizontal: "center", vertical: "top"}} autoHideDuration={5000} onClose={()=>{setMessage({open: false, severity: message.severity, value:''})}}>
-                <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{setMessage({open: false, severity: message.severity, value:''});console.log('fechou');}}>
+                <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{setMessage({open: false, severity: message.severity, value:''});}}>
                     <Typography variant='body1' component="div">{message.value}</Typography>
                 </Alert>
             </Snackbar>

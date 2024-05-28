@@ -5,9 +5,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Task from "../../models/Task";
 import Paginated from "../../models/Paginated";
 
-import dayjs from 'dayjs';
-
-
 interface TaskTableProps {
     loading?: boolean;
     paginated?: Paginated<Task>;
@@ -24,14 +21,6 @@ const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, 
 
         onPageChange && onPageChange(value);
     };
-
-    function formatarData(date:Date) {
-        const dia = String(date.getDay()).padStart(2, '0');
-        const mes = String(date.getMonth() + 1).padStart(2, '0');
-        const ano = date.getFullYear();
-      
-        return `${dia}/${mes}/${ano}`;
-    }
 
     return (
         <Card variant="outlined">

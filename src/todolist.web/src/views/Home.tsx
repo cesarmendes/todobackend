@@ -7,7 +7,6 @@ import TaskFilter from '../components/filters/TaskFilter';
 import Task from '../models/Task';
 import TaskService from '../services/TaskService';
 import TaskModal from '../components/modals/TaskModal';
-import ValidationError from '../models/ValidationError';
 import Message from '../models/Message';
 import Paginated from '../models/Paginated';
 import TaskDialog from '../components/dialogs/TaskDialog';
@@ -26,7 +25,6 @@ const Home = () => {
     const [taskDelete, setTaskDelete] = useState<Task>();
     const [name, setName] = useState<string>('');
     const [paginated, setPaginated] = useState<Paginated<Task>>();
-    const [validation, setValidation] = useState<ValidationError>();
     const [status, setStatus] = useState<Status[]>([]);
 
     const onSearchClick = (name: string, page?: number) => {
@@ -84,54 +82,6 @@ const Home = () => {
             .catch(error => console.log(error));
         }
     };
-    
-    const onCreateModalCloseClick = () => {
-        setValidation(undefined);
-        setOpenCreateModal(false);
-    }
-
-    const onCreateModalSaveClick = (task: Task) => {
-        taskService.createAsync(task)
-        .then(response => {
-            setValidation(undefined);
-            setOpenCreateModal(false);
-            setMessage({open: true, value: `Tarefa '${response.data.title}' adicionada com sucesso!`, severity: "success"});
-            onSearchClick(name);
-        })
-        .catch(error => {
-             if(error.response.status === 400) {
-                 setValidation(error.response.data);
-             } else if(error.response.status === 409) {
-                setMessage({open: true, value: error.response.data.detail, severity: "error"});
-             } else {
-                setMessage({open: true, value: 'Aconteceu um erro inesperado, tente novamente mais tarde!', severity: "error"});
-             }
-        })
-    }
-
-    const onUpdateModalCloseClick = () => {
-        setValidation(undefined);
-        setOpenUpdateModal(false);
-    }
-    
-    const onUpdateModalSaveClick = (task: Task) => {
-        taskService.updateAsync(task)
-        .then(response => {
-            setValidation(undefined);
-            setOpenUpdateModal(false);
-            setMessage({open: true, value: `Tarefa '${response.data.title}' atualizada com sucesso!`, severity: "success"});
-            onSearchClick(name);
-        })
-        .catch(error => {
-            if(error.response.status === 400) {
-                setValidation(error.response.data);
-            } else if(error.response.status === 409) {
-                setMessage({open: true, value: error.response.data.detail, severity: "error"});
-            } else {
-                setMessage({open: true, value: 'Aconteceu um erro inesperado, tente novamente mais tarde!', severity: "error"});
-            }
-        })
-    }
 
     useEffect(() => {
         Promise.all([taskService.searchAsync('', 1), statusService.searchAsync('')])
@@ -152,8 +102,8 @@ const Home = () => {
             <HomeHeader onButtonClick={()=> setOpenCreateModal(true)}/>
             <TaskFilter onSearchClick={onSearchClick} onClearClick={onClearClick}/>
             <TaskTable loading={searchLoading} paginated={paginated} onDeleteClick={onDeleteClick} onEditClick={onEditClick} onPageChange={onPageChange}/>
-            <TaskModal open={openCreateModal} mode="create" status={status} errors={validation?.errors} onModalSaveClick={onCreateModalSaveClick} onModalCloseClick={onCreateModalCloseClick}/>
-            <TaskModal open={openUpdateModal} mode="update" status={status} errors={validation?.errors} value={taskEdit} onModalSaveClick={onUpdateModalSaveClick} onModalCloseClick={onUpdateModalCloseClick}/>
+            <TaskModal open={openCreateModal} mode="create" status={status} onModalSuccess={(message) => {setMessage(message); setOpenCreateModal(false); onSearchClick(name);}} onModalError={(message) => setMessage(message)} onModalClose={() => setOpenCreateModal(false)} />
+            <TaskModal open={openUpdateModal} mode="update" status={status} value={taskEdit} onModalSuccess={(message) => {setMessage(message); setOpenUpdateModal(false); onSearchClick(name);}} onModalError={(message) => setMessage(message)} onModalClose={()=> setOpenUpdateModal(false)}/>
             <Snackbar open={message.open} anchorOrigin={{horizontal: "center", vertical: "top"}} autoHideDuration={5000} onClose={()=>{setMessage({open: false, severity: message.severity, value:''})}}>
                 <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{setMessage({open: false, severity: message.severity, value:''});}}>
                     <Typography variant='body1' component="div">{message.value}</Typography>

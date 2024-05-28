@@ -7,6 +7,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import Status from '../../models/Status';
 import Task from '../../models/Task';
 import dayjs from 'dayjs';
+import TaskService from '../../services/TaskService';
+import ValidationError from '../../models/ValidationError';
+import Message from '../../models/Message';
 
 
 interface TaskModalProps {
@@ -15,35 +18,81 @@ interface TaskModalProps {
     mode?: 'create' | 'update';
     status?: Status[];
     errors?: {[key: string]: string[]};
-    onModalSaveClick?: (task: Task) => void;
-    onModalCloseClick?:() => void;
+    onModalSuccess?: (message: Message) => void;
+    onModalError?: (message: Message) => void;
+    onModalClose?:() => void;
 }
 
-const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, status, errors, onModalSaveClick, onModalCloseClick}) => {
+const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, status, onModalSuccess, onModalError, onModalClose}) => {
     const  defaultTask = {id: 0, title: "", description: "", statusId: 0, startDate: new Date(), targetDate: new Date()};
 
     const [task, setTask] = useState<Task>(value ?? defaultTask);
+    const [validation, setValidation] = useState<ValidationError>();
+
+    const taskService = new TaskService();
 
     const onSaveClick = () => {
-        if(onModalSaveClick){
-            onModalSaveClick(task);
-
-            if(mode !== "update") {
-                setTask(defaultTask);   
-            }
+        if(mode === "create") {
+            taskService.createAsync(task)
+            .then(response => {
+                setValidation(undefined);
+                setTask(defaultTask);
+                onModalSuccess && onModalSuccess({open: true, value: `Tarefa '${response.data.title}' adicionada com sucesso!`, severity: "success"})
+            })
+            .catch(error => {
+                if(error.response.status === 400) {
+                    setValidation(error.response.data);
+                } else if(error.response.status === 409) {
+                    onModalError && onModalError({open: true, value: error.response.data.detail, severity: "error"});
+                } else {
+                    onModalError && onModalError({open: true, value: 'Aconteceu um erro inesperado, tente novamente mais tarde!', severity: "error"});
+                }
+            });
+        } else {
+            taskService.updateAsync(task)
+            .then(response => {
+                setValidation(undefined);
+                onModalSuccess && onModalSuccess({open: true, value: `Tarefa '${response.data.title}' atualizada com sucesso!`, severity: "success"});
+            })
+            .catch(error => {
+                if(error.response.status === 400) {
+                    setValidation(error.response.data);
+                } else if(error.response.status === 409) {
+                    onModalError && onModalError({open: true, value: error.response.data.detail, severity: "error"});
+                } else {
+                    onModalError && onModalError({open: true, value: 'Aconteceu um erro inesperado, tente novamente mais tarde!', severity: "error"});
+                }
+            })
         }
     };
 
-    const onCancelClick = () => {
-        if(onModalCloseClick){
-            onModalCloseClick();
-            setTask(defaultTask);
+    const resetError = (name: string) => {
+        if(validation && validation.errors && validation.errors[name]?.length > 0) {
+            validation.errors[name] = [];
+            setValidation(validation);
         }
+    }; 
+
+    const hasError = (name:string) : boolean =>   {
+        if(validation && validation.errors) {
+            return validation.errors[name]?.length > 0;
+        }
+        
+        return false;
+    }
+
+    const getError = (name: string) : string => {
+        if(validation && validation.errors && validation.errors[name]?.length > 0) {
+            return validation.errors[name][0];
+        }
+        
+        return '';
     }
 
     useEffect(() => {
         if (value && value !== task) {
             setTask(value);
+            console.log('useeffect')
         }
     }, [value]);
 
@@ -53,7 +102,7 @@ const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, status, errors
                 <Container>
                     <Toolbar disableGutters>
                         <Stack direction="row" justifyContent="flex-end" spacing={1} width="100%">
-                            <Button variant="outlined" onClick={onCancelClick} sx={{width:100}}>Cancelar</Button>
+                            <Button variant="outlined" onClick={() => onModalClose && onModalClose()} sx={{width:100}}>Cancelar</Button>
                             <Button variant="contained" onClick={onSaveClick} sx={{width:100}}>Salvar</Button>
                         </Stack>
                     </Toolbar>
@@ -63,35 +112,38 @@ const TaskModal : React.FC<TaskModalProps> = ({open, value, mode, status, errors
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} lg={6}>
-                                    <TextField label="Titulo" value={task?.title} onChange={(event) => setTask({...task, title: event.target.value})} error={errors && errors["Title"]?.length > 0} helperText={errors && errors["Title"]?.length > 0 && errors["Title"][0]} fullWidth/>
+                                    <TextField name="Title" label="Titulo" value={task?.title} onChange={(event) => {setTask({...task, title: event.target.value}); resetError(event.target.name);}} error={hasError("Title")} helperText={getError("Title")} fullWidth/>
                                 </Grid>
                                 <Grid item xs={12} lg={6}>
-                                    <FormControl error={errors && errors["StatusId"]?.length > 0} fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                                        <Select value={task.statusId} onChange={(event) => setTask({...task, statusId: Number(event.target.value)})}>
+                                    <FormControl error={hasError("StatusId")} fullWidth>
+                                        <InputLabel>Status</InputLabel>
+                                        <Select name="StatusId" value={task.statusId} onChange={(event) => {setTask({...task, statusId: Number(event.target.value)});resetError(event.target.name);}}>
                                             <MenuItem value={0}>Selecione</MenuItem>
                                             {
                                                 status && status.length > 0 ? status.map(status => <MenuItem key={status.id} value={status.id}>{status.name}</MenuItem>) : []    
                                             }
                                         </Select>
-                                        <FormHelperText>{errors && errors["StatusId"]?.length > 0 && errors["StatusId"][0]}</FormHelperText>
+                                        <FormHelperText>{getError("StatusId")}</FormHelperText>
                                     </FormControl>
                                 </Grid> 
                                 <Grid item xs={12} lg={6}>
-                                    <LocalizationProvider localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText} dateAdapter={AdapterDayjs}>
-                                        <DatePicker label="Data de início" value={dayjs(task.startDate)} onChange={(newValue) => setTask({...task, startDate: dayjs(newValue).toDate()})} format='DD/MM/YYYY' sx={{width:'100%'}}/>
-                                    </LocalizationProvider>
+                                    <FormControl error={hasError("StartDate")} fullWidth>
+                                        <LocalizationProvider localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText} dateAdapter={AdapterDayjs}>
+                                            <DatePicker label="Data de início" value={dayjs(task.startDate)} onChange={(newValue) => {setTask({...task, startDate: dayjs(newValue).toDate()});resetError("StartDate");}} format='DD/MM/YYYY' sx={{width:'100%'}}/>
+                                        </LocalizationProvider>
+                                    <FormHelperText>{getError("StartDate")}</FormHelperText>
+                                    </FormControl>
                                 </Grid>
                                 <Grid item xs={12} lg={6}>
-                                    <FormControl error={errors && errors["TargetDate"]?.length > 0} fullWidth>
+                                    <FormControl error={hasError("TargetDate")} fullWidth>
                                         <LocalizationProvider localeText={ptBR.components.MuiLocalizationProvider.defaultProps.localeText} dateAdapter={AdapterDayjs}>
-                                            <DatePicker label="Data de entrega" minDate={dayjs(task.startDate)} value={dayjs(task.targetDate)} onChange={(newValue) => setTask({...task, targetDate: dayjs(newValue).toDate()})} format='DD/MM/YYYY' sx={{width:'100%'}}/>
+                                            <DatePicker label="Data de entrega" minDate={dayjs(task.startDate)} value={dayjs(task.targetDate)} onChange={(newValue) => {setTask({...task, targetDate: dayjs(newValue).toDate()});resetError("TargetDate");}} format='DD/MM/YYYY' sx={{width:'100%'}}/>
                                         </LocalizationProvider>
-                                        <FormHelperText>{errors && errors["TargetDate"]?.length > 0 && errors["TargetDate"][0]}</FormHelperText>
+                                        <FormHelperText>{getError("TargetDate")}</FormHelperText>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField label="Descrição" value={task.description} onChange={(event) =>  setTask({...task, description: event.target.value})} error={errors && errors["Description"]?.length > 0} helperText={errors && errors["Description"]?.length > 0 && errors["Description"][0]} minRows={4} multiline fullWidth/>
+                                    <TextField name="Description" label="Descrição" value={task.description} onChange={(event) =>  {setTask({...task, description: event.target.value}); resetError(event.target.name);}} error={hasError("Description")} helperText={getError("Description")} minRows={4} multiline fullWidth/>
                                 </Grid>   
                             </Grid>
                         </CardContent>

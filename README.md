@@ -16,9 +16,9 @@ Para rodar o projeto e utilizar, será necessário ter o Docker Desktop instalad
 acesso aos comandos do Docker CLI que possa ser utilizado via prompt. Também será necessário o Sql Server Managment Studio para criar a estrutura
 da base de dados.
 
-[Docker Desktop](https://www.docker.com/products/docker-desktop/)
-[Rancher Desktop](https://rancherdesktop.io/)
-[Sql Server Management Studio](https://learn.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+* [Rancher Desktop](https://rancherdesktop.io/)
+* [Sql Server Management Studio](https://learn.microsoft.com/pt-br/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
 
 ### 🔧 Instalação
 

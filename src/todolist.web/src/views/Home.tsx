@@ -29,12 +29,18 @@ const Home = () => {
     const [validation, setValidation] = useState<ValidationError>();
     const [status, setStatus] = useState<Status[]>([]);
 
-    const onSearchClick = (name: string) => {
+    const onSearchClick = (name: string, page?: number) => {
         setSearchLoading(true);
         setName(name);
         
-        taskService.searchAsync(name, 1)
+        taskService.searchAsync(name, page ?? 1)
         .then(response => {
+            response.data.items = response.data.items.map((task) =>{
+                const s = status.find((item) => item.id === task.statusId);
+                task.status = s?.name;
+                return task;
+            });
+
             setPaginated(response.data);
         })
         .catch(error => console.log(error))
@@ -49,18 +55,7 @@ const Home = () => {
 
     const onPageChange = (page: number) => {
         if (page !== paginated?.pageNumber) {
-            setSearchLoading(true);
-
-            taskService.searchAsync(name, page)
-            .then(response => {
-                setPaginated(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            })
-            .finally(() => {
-                setSearchLoading(false);
-            });
+            onSearchClick(name, page);
         }
     }
 
@@ -139,11 +134,17 @@ const Home = () => {
     }
 
     useEffect(() => {
-        taskService.searchAsync('', 1)
-                   .then(response => setPaginated(response.data));
-        
-        statusService.searchAsync('')
-                     .then(response => setStatus(response.data.items));
+        Promise.all([taskService.searchAsync('', 1), statusService.searchAsync('')])
+               .then((values) => {
+                values[0].data.items = values[0].data.items.map((task) =>{
+                    const status = values[1].data.items.find((item) => item.id === task.statusId);
+                    task.status = status?.name;
+                    return task;
+                });
+
+                setPaginated(values[0].data);
+                setStatus(values[1].data.items);
+               });
     }, []);
 
     return (

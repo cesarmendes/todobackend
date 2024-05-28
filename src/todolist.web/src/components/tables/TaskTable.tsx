@@ -44,7 +44,7 @@ const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, 
                                     <TableRow key={task.id}>
                                         <TableCell>{task.id}</TableCell>
                                         <TableCell>{task.title}</TableCell>
-                                        <TableCell>{task.statusId}</TableCell>
+                                        <TableCell>{task.status}</TableCell>
                                         <TableCell>{task.description}</TableCell>
                                         <TableCell align="center">
                                             <Tooltip title="Atualizar tarefa" onClick={() => onEditClick && onEditClick(task)}>

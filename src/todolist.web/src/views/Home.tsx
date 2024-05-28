@@ -27,11 +27,11 @@ const Home = () => {
     const [paginated, setPaginated] = useState<Paginated<Task>>();
     const [status, setStatus] = useState<Status[]>([]);
 
-    const onSearchClick = (name: string, page?: number) => {
+    const onSearchClick = (name: string, page: number) => {
         setSearchLoading(true);
         setName(name);
         
-        taskService.searchAsync(name, page ?? 1)
+        taskService.searchAsync(name, page)
         .then(response => {
             response.data.items = response.data.items.map((task) =>{
                 const s = status.find((item) => item.id === task.statusId);
@@ -48,11 +48,13 @@ const Home = () => {
     };
 
     const onClearClick = async () => {
-        onSearchClick('');
+        onSearchClick('', 1);
     };
 
     const onPageChange = (page: number) => {
         if (page !== paginated?.pageNumber) {
+            console.log(name);
+            console.log(page);
             onSearchClick(name, page);
         }
     }
@@ -60,7 +62,6 @@ const Home = () => {
     const onEditClick = (task: Task) => {
         setTaskEdit(task);
         setOpenUpdateModal(true);
-        console.log(task);
     }
     const onDeleteClick = (task: Task) => {
         setTaskDelete(task);
@@ -75,7 +76,7 @@ const Home = () => {
             taskService
             .removeAsync(taskDelete.id)
             .then(response => {
-                onSearchClick(name);
+                onSearchClick(name, 1);
                 setMessage({open: true, value: `Tarefa '${response.data.title}' excluída com sucesso!`, severity: "success"});
                 setTaskDelete(undefined);
             })
@@ -100,10 +101,10 @@ const Home = () => {
     return (
         <Container>
             <HomeHeader onButtonClick={()=> setOpenCreateModal(true)}/>
-            <TaskFilter onSearchClick={onSearchClick} onClearClick={onClearClick}/>
+            <TaskFilter onSearchClick={(name: string) => onSearchClick(name, 1)} onClearClick={onClearClick}/>
             <TaskTable loading={searchLoading} paginated={paginated} onDeleteClick={onDeleteClick} onEditClick={onEditClick} onPageChange={onPageChange}/>
-            <TaskModal open={openCreateModal} mode="create" status={status} onModalSuccess={(message) => {setMessage(message); setOpenCreateModal(false); onSearchClick(name);}} onModalError={(message) => setMessage(message)} onModalClose={() => setOpenCreateModal(false)} />
-            <TaskModal open={openUpdateModal} mode="update" status={status} value={taskEdit} onModalSuccess={(message) => {setMessage(message); setOpenUpdateModal(false); onSearchClick(name);}} onModalError={(message) => setMessage(message)} onModalClose={()=> setOpenUpdateModal(false)}/>
+            <TaskModal open={openCreateModal} mode="create" status={status} onModalSuccess={(message) => {setMessage(message); setOpenCreateModal(false); onSearchClick(name, 1);}} onModalError={(message) => setMessage(message)} onModalClose={() => setOpenCreateModal(false)} />
+            <TaskModal open={openUpdateModal} mode="update" status={status} value={taskEdit} onModalSuccess={(message) => {setMessage(message); setOpenUpdateModal(false); onSearchClick(name, 1);}} onModalError={(message) => setMessage(message)} onModalClose={()=> setOpenUpdateModal(false)}/>
             <Snackbar open={message.open} anchorOrigin={{horizontal: "center", vertical: "top"}} autoHideDuration={5000} onClose={()=>{setMessage({open: false, severity: message.severity, value:''})}}>
                 <Alert severity={message.severity} variant="filled" sx={{width:400}} onClose={()=>{setMessage({open: false, severity: message.severity, value:''});}}>
                     <Typography variant='body1' component="div">{message.value}</Typography>

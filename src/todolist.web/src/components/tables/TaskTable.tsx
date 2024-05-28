@@ -64,29 +64,29 @@ const TaskTable : React.FC<TaskTableProps> = ({loading, paginated, onEditClick, 
                                 ))
                                 :
                                 <TableRow>
-                                    <TableCell colSpan={5}>
+                                    <TableCell colSpan={6}>
                                         <Typography>Nenhuma tarefa foi encontrada</Typography>
                                     </TableCell>
                                 </TableRow>
                                 :
                                 <>
                                     <TableRow>
-                                        <TableCell colSpan={5}>
+                                        <TableCell colSpan={6}>
                                             <Skeleton variant="rectangular" height={50}/>
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell colSpan={5}>
+                                        <TableCell colSpan={6}>
                                             <Skeleton variant="rectangular" height={50}/>
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell colSpan={5}>
+                                        <TableCell colSpan={6}>
                                             <Skeleton variant="rectangular" height={50}/>
                                         </TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell colSpan={5}>
+                                        <TableCell colSpan={6}>
                                             <Skeleton variant="rectangular" height={50}/>
                                         </TableCell>
                                     </TableRow>
